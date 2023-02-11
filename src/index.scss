@@ -1,10 +1,10 @@
+@import './vars';
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Roboto";
+  font-family: -apple-system, BlinkMacSystemFont, 'Roboto';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #F5F5F5 !important;
-  color: #252525 !important;
+  color: $black-color !important;
 }
-
-/*# sourceMappingURL=index.css.map */
