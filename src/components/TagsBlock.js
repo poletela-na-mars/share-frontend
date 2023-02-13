@@ -10,6 +10,7 @@ import Skeleton from '@mui/material/Skeleton';
 
 import { SideBlock } from './SideBlock';
 
+//TODO - фильтрация статей по тегам
 export const TagsBlock = ({items, isLoading = true}) => {
     return (
         <SideBlock title='Теги'>

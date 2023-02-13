@@ -8,9 +8,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 
-import { Post } from '../components/Post';
-import { TagsBlock } from '../components/TagsBlock';
-import { CommentsBlock } from '../components/CommentsBlock';
+import { Post } from '../components';
+import { TagsBlock } from '../components';
+import { CommentsBlock } from '../components';
 
 //TODO - убрать обводку на статье при просмотре
 
@@ -33,6 +33,7 @@ export const Home = () => {
             <Tabs style={{marginBottom: 15}} value={0} aria-label='basic tabs example'>
                 <Tab label='Новые'/>
                 <Tab label='Популярные'/>
+                {/*TODO - функциональность "Популярные"*/}
             </Tabs>
             <Grid container spacing={4}>
                 <Grid xs={8} item>

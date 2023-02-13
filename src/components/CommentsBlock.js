@@ -9,6 +9,8 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Skeleton from '@mui/material/Skeleton';
 
+//TODO - отображение всех комментариев из статей
+//TODO - реализовать комментарии + аватарка
 export const CommentsBlock = ({items, children, isLoading = true}) => {
     return (
         <SideBlock title='Комментарии'>

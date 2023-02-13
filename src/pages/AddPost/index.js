@@ -1,8 +1,8 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from '../../redux/slices/auth';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axios';
 
 import TextField from '@mui/material/TextField';
@@ -15,6 +15,7 @@ import styles from './AddPost.module.scss';
 
 export const AddPost = () => {
     const navigate = useNavigate();
+    const {id} = useParams();
     const isAuth = useSelector(selectIsAuth);
     const [isLoading, setLoading] = useState(false);
     const [text, setText] = useState('');
@@ -23,6 +24,11 @@ export const AddPost = () => {
     const [imageUrl, setImageUrl] = useState('');
     const inputFileRef = useRef(null);
 
+    const isEditing = Boolean(id);
+
+    console.log(id, isEditing);
+
+    //TODO - полоноэкранный режим редактора с проблемами
     const handleChangeFile = async (event) => {
         try {
             const formData = new FormData();
@@ -66,17 +72,38 @@ export const AddPost = () => {
                 text,
             };
 
-            const {data} = await axios.post('/posts', fields);
+            const {data} = isEditing
+                ? await axios.patch(`/posts/${id}`, fields)
+                : await axios.post('/posts', fields);
 
-            const id = data._id;
+            console.log(id, isEditing);
 
-            navigate(`/posts/${id}`);
+            const _id = isEditing ? id : data._id;
+
+            navigate(`/posts/${_id}`);
         } catch (err) {
             console.error(err);
             //TODO - попап для ошибки
             alert('Ошибка при создании статьи');
         }
     };
+
+    useEffect(() => {
+        if (id) {
+            axios.get(`/posts/${id}`).then(({data}) => {
+                setTitle(data.title);
+                setText(data.text);
+                setImageUrl(data.imageUrl);
+                const dataTags = data.tags;
+                const joinedTags = dataTags.join(',');
+                setTags(joinedTags);
+            }).catch((err) => {
+                console.error(err);
+                //TODO - попап с ошибкой
+                alert('Ошибка при получении статьи')
+            });
+        }
+    }, [id]);
 
     const options = useMemo(
         () => ({
@@ -100,6 +127,7 @@ export const AddPost = () => {
 
     return (
         //TODO - уменьшить размер картинки
+        //TODO - поправить верстку, когда есть картинка в посте
         <Paper style={{padding: 30}}>
             <Button onClick={() => inputFileRef.current.click()} variant='outlined' size='large'>
                 Загрузить превью
@@ -140,7 +168,7 @@ export const AddPost = () => {
             />
             <div className={styles.buttons}>
                 <Button onClick={onSubmit} size='large' variant='contained'>
-                    Опубликовать
+                    {isEditing ? 'Сохранить' : 'Опубликовать'}
                 </Button>
                 <a href='/'>
                     <Button size='large'>Отмена</Button>

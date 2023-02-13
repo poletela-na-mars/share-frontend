@@ -1,4 +1,4 @@
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import clsx from 'clsx';
@@ -13,7 +13,6 @@ import styles from './Post.module.scss';
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 import { fetchRemovePost } from '../../redux/slices/posts';
-import { logout } from '../../redux/slices/auth';
 
 export const Post = ({
                          id,
@@ -34,7 +33,7 @@ export const Post = ({
         return <PostSkeleton/>;
     }
 
-    //TODO - теги не удаляются при удалении статьи
+    //TODO - некорректная страница - страница с ошибкой (несущестсвующий уже тег, страный id статьи)
     const onClickRemove = () => {
         //TODO - попап с вопросом
         if (window.confirm('Вы действительно хотите удалить статью?')) {
