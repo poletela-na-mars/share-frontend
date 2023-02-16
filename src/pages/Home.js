@@ -3,14 +3,13 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchPosts, fetchTags } from '../redux/slices/posts';
+import { dateFormatter } from '../utils/dateFormatter';
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 
-import { Post } from '../components';
-import { TagsBlock } from '../components';
-import { CommentsBlock } from '../components';
+import { CommentsBlock, Post, TagsBlock } from '../components';
 
 //TODO - убрать обводку на статье при просмотре
 
@@ -42,18 +41,17 @@ export const Home = () => {
                             <Post key={idx} isLoading={true}/>
                         ) : (
                             <Post
+                                key={obj._id}
                                 id={obj._id}
                                 title={obj.title}
                                 imageUrl={obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ''}
                                 user={obj.user}
-                                createdAt={obj.createdAt}
+                                createdAt={dateFormatter(obj.createdAt)}
                                 viewsCount={obj.viewsCount}
                                 commentsCount={3}
                                 tags={obj.tags}
                                 isEditable={userData?._id === obj.user._id}
                             />
-                            // console.log(userData?._id === obj._id, userData?._id, obj._id)
-                            // console.log(userData._id === obj.user._id)
                         )
                     )}
                 </Grid>

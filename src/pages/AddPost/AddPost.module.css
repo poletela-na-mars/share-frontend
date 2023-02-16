@@ -32,5 +32,8 @@
 .buttons button {
   margin-right: 15px;
 }
+.buttons a {
+  text-decoration: none;
+}
 
 /*# sourceMappingURL=AddPost.module.css.map */

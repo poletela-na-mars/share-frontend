@@ -1,6 +1,9 @@
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { fetchRemovePost } from '../../redux/slices/posts';
+import { dateFormatter } from '../../utils/dateFormatter';
+
 import clsx from 'clsx';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Clear';
@@ -12,7 +15,6 @@ import styles from './Post.module.scss';
 
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
-import { fetchRemovePost } from '../../redux/slices/posts';
 
 export const Post = ({
                          id,
@@ -63,7 +65,7 @@ export const Post = ({
                 />
             )}
             <div className={styles.wrapper}>
-                <UserInfo {...user} additionalText={createdAt}/>
+                <UserInfo {...user} additionalText={dateFormatter(createdAt)}/>
                 <div className={styles.indention}>
                     <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
                         {isFullPost ? title : <Link to={`/posts/${id}`}>{title}</Link>}

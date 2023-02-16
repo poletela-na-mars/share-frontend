@@ -55,7 +55,6 @@ export const AddPost = () => {
         try {
             setLoading(true);
 
-            //TODO - поменять кнопку Отмена
             //TODO - добавить error для неверных тегов, заголовка, текста
             const trimTags = () => {
                 const splittedTags = tags.split(',');
@@ -78,6 +77,7 @@ export const AddPost = () => {
 
             console.log(id, isEditing);
 
+            //TODO - добавить "последние изменения: время"
             const _id = isEditing ? id : data._id;
 
             navigate(`/posts/${_id}`);
