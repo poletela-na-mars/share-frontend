@@ -5,6 +5,10 @@ export const theme = createTheme({
     palette: {
         primary: {
             main: '#003333',
+            light: '#006666',
+        },
+        gray: {
+          dark: 'rgba(0,0,0,.1)',
         },
     },
     typography: {
@@ -12,6 +16,10 @@ export const theme = createTheme({
             textTransform: 'none',
             fontWeight: 400,
         },
+    },
+    shape: {
+        lightRoundedBorderRadius: '20px',
+        roundedBorderRadius: '50px',
     },
 });
 

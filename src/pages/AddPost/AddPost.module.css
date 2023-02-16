@@ -16,6 +16,7 @@
 
 .editor {
   margin: 30px -30px;
+  z-index: 1000;
 }
 .editor :global .cm-s-easymde {
   border: 0;
@@ -23,7 +24,6 @@
 }
 .editor :global .editor-toolbar {
   border: 0;
-  background-color: rgba(0, 0, 0, 0.02);
 }
 
 .buttons {

@@ -3,15 +3,13 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchPosts, fetchTags } from '../redux/slices/posts';
-import { dateFormatter } from '../utils/dateFormatter';
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 
-import { CommentsBlock, Post, TagsBlock } from '../components';
-
-//TODO - убрать обводку на статье при просмотре
+import { CommentsBlock, Post } from '../components';
+import { TagsBlock } from '../components';
 
 export const Home = () => {
     const dispatch = useDispatch();
@@ -46,7 +44,7 @@ export const Home = () => {
                                 title={obj.title}
                                 imageUrl={obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ''}
                                 user={obj.user}
-                                createdAt={dateFormatter(obj.createdAt)}
+                                createdAt={obj.createdAt}
                                 viewsCount={obj.viewsCount}
                                 commentsCount={3}
                                 tags={obj.tags}
@@ -81,5 +79,3 @@ export const Home = () => {
         </>
     );
 };
-
-//TODO - выделение ссылок и статей - сменить цвет
