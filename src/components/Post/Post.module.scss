@@ -9,8 +9,8 @@
   position: relative;
 
   &:hover {
-    border: 1px solid $light-green-color;
-    box-shadow: 0 0 0 1px $light-green-color;
+    //border: 1px solid $light-green-color;
+    //box-shadow: 0 0 0 1px $light-green-color;
 
     .editButtons {
       opacity: 1;
@@ -44,6 +44,8 @@
 .content {
   margin: 30px 0 50px;
 
+  color: $black-color;
+
   p {
     font-size: 22px;
     line-height: 36px;
@@ -60,7 +62,7 @@
 
   a {
     text-decoration: none;
-    color: #000;
+    color: $black-color;
 
     &:hover {
       color: $light-green-color;

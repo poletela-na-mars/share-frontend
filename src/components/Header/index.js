@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 
 import styles from './Header.module.scss';
+import { theme } from '../../theme';
 
 export const Header = () => {
     const dispatch = useDispatch();
@@ -31,11 +32,15 @@ export const Header = () => {
                     <div className={styles.buttons}>
                         {isAuth ? (
                             <>
-                                <Button onClick={onClickLogout} variant='contained' color='error'>
+                                <Button onClick={onClickLogout} variant='contained'>
                                     Выйти
                                 </Button>
                                 <Link to='/add-post'>
-                                    <Button variant='contained'>Написать статью</Button>
+                                    <Button variant='contained'
+                                            style={{backgroundColor: theme.palette.primary.light}}
+                                    >
+                                        Написать статью
+                                    </Button>
                                 </Link>
 
                             </>
@@ -55,6 +60,3 @@ export const Header = () => {
         </div>
     );
 };
-
-//TODO -сменить черный
-//TODO -favicon

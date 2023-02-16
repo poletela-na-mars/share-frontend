@@ -12,6 +12,7 @@ import SimpleMDE from 'react-simplemde-editor';
 
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
+import { theme } from '../../theme';
 
 export const AddPost = () => {
     const navigate = useNavigate();
@@ -28,7 +29,6 @@ export const AddPost = () => {
 
     console.log(id, isEditing);
 
-    //TODO - полоноэкранный режим редактора с проблемами
     const handleChangeFile = async (event) => {
         try {
             const formData = new FormData();
@@ -77,7 +77,7 @@ export const AddPost = () => {
 
             console.log(id, isEditing);
 
-            //TODO - добавить "последние изменения: время"
+            //TODO - добавить "последние изменения: время". Добавить в бэке поле "edited" - tr/f -> покажем строку в Post
             const _id = isEditing ? id : data._id;
 
             navigate(`/posts/${_id}`);
@@ -129,13 +129,13 @@ export const AddPost = () => {
         //TODO - уменьшить размер картинки
         //TODO - поправить верстку, когда есть картинка в посте
         <Paper style={{padding: 30}}>
-            <Button onClick={() => inputFileRef.current.click()} variant='outlined' size='large'>
-                Загрузить превью
+            <Button onClick={() => inputFileRef.current.click()} variant='outlined'>
+                Загрузить обложку
             </Button>
             <input ref={inputFileRef} type='file' onChange={handleChangeFile} hidden/>
             {imageUrl && (
                 <>
-                    <Button variant='contained' color='error' onClick={onClickRemoveImage}>
+                    <Button variant='contained' style={{marginLeft: 8, backgroundColor: theme.palette.primary.light}} onClick={onClickRemoveImage}>
                         Удалить
                     </Button>
                     <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt='Uploaded'/>

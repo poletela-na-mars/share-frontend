@@ -6,10 +6,6 @@
   margin-bottom: 15px;
   position: relative;
 }
-.root:hover {
-  border: 1px solid #006666;
-  box-shadow: 0 0 0 1px #006666;
-}
 .root:hover .editButtons {
   opacity: 1;
 }
@@ -35,6 +31,7 @@
 
 .content {
   margin: 30px 0 50px;
+  color: #252525;
 }
 .content p {
   font-size: 22px;
@@ -51,7 +48,7 @@
 }
 .title a {
   text-decoration: none;
-  color: #000;
+  color: #252525;
 }
 .title a:hover {
   color: #006666;
