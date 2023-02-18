@@ -4,9 +4,9 @@ import { useParams } from 'react-router-dom';
 import axios from '../axios';
 import ReactMarkdown from 'react-markdown';
 
-import { Post } from '../components/Post';
-import { Index } from '../components/AddComment';
-import { CommentsBlock } from '../components/CommentsBlock';
+import { Post } from '../components';
+import { Index } from '../components';
+import { CommentsBlock } from '../components';
 
 export const FullPost = () => {
     const [data, setData] = useState();
@@ -36,6 +36,7 @@ export const FullPost = () => {
                 imageUrl={data.imageUrl ? `http://localhost:4444${data.imageUrl}` : ''}
                 user={data.user}
                 createdAt={data.createdAt}
+                wasEdited={data.wasEdited}
                 viewsCount={data.viewsCount}
                 commentsCount={3}
                 tags={data.tags}

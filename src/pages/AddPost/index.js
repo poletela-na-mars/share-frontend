@@ -73,9 +73,6 @@ export const AddPost = () => {
                 ? await axios.patch(`/posts/${id}`, fields)
                 : await axios.post('/posts', fields);
 
-            console.log(id, isEditing);
-
-            //TODO - добавить "последние изменения: время". Добавить в бэке поле "edited" - tr/f -> покажем строку в Post
             const _id = isEditing ? id : data._id;
 
             navigate(`/posts/${_id}`);
