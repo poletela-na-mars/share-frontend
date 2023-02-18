@@ -12,7 +12,7 @@ import SimpleMDE from 'react-simplemde-editor';
 
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
-import { theme } from '../../theme';
+import Container from '@mui/material/Container';
 
 export const AddPost = () => {
     const navigate = useNavigate();
@@ -26,8 +26,6 @@ export const AddPost = () => {
     const inputFileRef = useRef(null);
 
     const isEditing = Boolean(id);
-
-    console.log(id, isEditing);
 
     const handleChangeFile = async (event) => {
         try {
@@ -58,7 +56,7 @@ export const AddPost = () => {
             //TODO - добавить error для неверных тегов, заголовка, текста
             const trimTags = () => {
                 const splittedTags = tags.split(',');
-                const trimmedTags =  splittedTags.map((tag) => tag.trim());
+                const trimmedTags = splittedTags.map((tag) => tag.trim());
                 return trimmedTags.filter((tag) => tag !== '');
             };
 
@@ -126,20 +124,18 @@ export const AddPost = () => {
     }
 
     return (
-        //TODO - уменьшить размер картинки
-        //TODO - поправить верстку, когда есть картинка в посте
         <Paper style={{padding: 30}}>
-            <Button onClick={() => inputFileRef.current.click()} variant='outlined'>
-                Загрузить обложку
-            </Button>
-            <input ref={inputFileRef} type='file' onChange={handleChangeFile} hidden/>
+            <Container disableGutters={true}>
+                <Button onClick={() => inputFileRef.current.click()} variant='outlined'>
+                    Загрузить обложку
+                </Button>
+                <input ref={inputFileRef} type='file' onChange={handleChangeFile} hidden/>
+                <Button disabled={!imageUrl} style={{marginLeft: 8}} onClick={onClickRemoveImage}>
+                    Удалить
+                </Button>
+            </Container>
             {imageUrl && (
-                <>
-                    <Button variant='contained' style={{marginLeft: 8, backgroundColor: theme.palette.primary.light}} onClick={onClickRemoveImage}>
-                        Удалить
-                    </Button>
-                    <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt='Uploaded'/>
-                </>
+                <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt='Uploaded'/>
             )}
             <br/>
             <br/>
