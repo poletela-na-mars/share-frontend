@@ -21,7 +21,8 @@ export const TagsBlock = ({items, isLoading = true}) => {
             <List
                 className={styles.list}
                 style={{maxHeight: 300, overflow: 'auto'}}
-                sx={{'&::-webkit-scrollbar': {
+                sx={{
+                    '&::-webkit-scrollbar': {
                         width: '0.4em'
                     },
                     '&::-webkit-scrollbar-track': {
@@ -31,9 +32,10 @@ export const TagsBlock = ({items, isLoading = true}) => {
                     '&::-webkit-scrollbar-thumb': {
                         backgroundColor: 'rgba(0,0,0,.1)',
                         borderRadius: theme.shape.lightRoundedBorderRadius,
-                    }}}
+                    }
+                }}
             >
-                {(isLoading ? [...Array(5)] : items).map((name) => (
+                {(isLoading ? [...Array(5)] : items).filter((x, i, a) => a.indexOf(x) === i).map((name) => (
                     <a
                         style={{textDecoration: 'none', color: 'black'}}
                         href={`/tags/${name}`}
