@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,10 +8,10 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 
-import { CommentsBlock, Post } from '../components';
-import { TagsBlock } from '../components';
+import { CommentsBlock, Post, TagsBlock } from '../components';
 
 export const Home = () => {
+    const [tabValue, setTabValue] = useState(0);
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.auth.data);
     const {posts, tags} = useSelector((state) => state.posts);
@@ -20,17 +20,25 @@ export const Home = () => {
     const isTagsLoading = tags.status === 'loading';
 
     useEffect(() => {
-            dispatch(fetchPosts());
-            dispatch(fetchTags());
-        }, [dispatch]
+            let sortQuery;
+            tabValue === 0 ? sortQuery = 'new' : sortQuery = 'popular';
+            dispatch(fetchPosts(sortQuery));
+        }, [dispatch, tabValue]
     );
+
+    useEffect(() => {
+        dispatch(fetchTags());
+    }, [dispatch]);
+
+    const handleTabValueChange = (e, tabValue) => {
+        setTabValue(tabValue);
+    };
 
     return (
         <>
-            <Tabs style={{marginBottom: 15}} value={0} aria-label='basic tabs example'>
+            <Tabs style={{marginBottom: 15}} value={tabValue} onChange={handleTabValueChange} aria-label='tabs'>
                 <Tab label='Новые'/>
                 <Tab label='Популярные'/>
-                {/*TODO - функциональность "Популярные"*/}
             </Tabs>
             <Grid container spacing={4}>
                 <Grid xs={8} item>
