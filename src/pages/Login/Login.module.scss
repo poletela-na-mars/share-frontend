@@ -14,3 +14,8 @@
   font-weight: bold !important;
   margin-bottom: 30px !important;
 }
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}

@@ -11,8 +11,8 @@ export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
     return data;
 });
 
-export const fetchRemovePost = createAsyncThunk('posts/fetchRemovePosts', async (id) =>
-    axios.delete(`/posts/${id}`)
+export const fetchRemovePost = createAsyncThunk('posts/fetchRemovePosts', async ({id, imageUrl}) =>
+    axios.delete(`/posts/${id}`, { data: {imageUrl: imageUrl} })
 );
 
 const initialState = {

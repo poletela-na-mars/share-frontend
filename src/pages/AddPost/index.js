@@ -16,24 +16,29 @@ import Container from '@mui/material/Container';
 
 export const AddPost = () => {
     const navigate = useNavigate();
-    const {id} = useParams();
+    const { id } = useParams();
     const isAuth = useSelector(selectIsAuth);
     const [isLoading, setLoading] = useState(false);
     const [text, setText] = useState('');
     const [title, setTitle] = useState('');
     const [tags, setTags] = useState('');
+    const [oldImageUrl, setOldImageUrl] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+    const [imagePreview, setImagePreview] = useState('');
+    const [file, setFile] = useState('');
+    const [objUrl, setObjUrl] = useState('');
     const inputFileRef = useRef(null);
 
     const isEditing = Boolean(id);
 
     const handleChangeFile = async (event) => {
         try {
-            const formData = new FormData();
-            const file = event.target.files[0];
-            formData.append('image', file);
-            const {data} = await axios.post('/upload', formData);
-            setImageUrl(data.url);
+            const targetFile = event.target.files[0];
+            const createdObjUrl = URL.createObjectURL(targetFile);
+            setFile(targetFile);
+            setObjUrl(createdObjUrl);
+            setImageUrl('');
+            setImagePreview(createdObjUrl);
         } catch (err) {
             console.error(err);
             //TODO - попап для ошибки
@@ -42,15 +47,36 @@ export const AddPost = () => {
     };
 
     const onClickRemoveImage = () => {
+        setImagePreview('');
         setImageUrl('');
+        setFile('');
+        URL.revokeObjectURL(objUrl);
     };
 
     const onChange = useCallback((value) => {
         setText(value);
     }, []);
 
+    const uploadImage = async () => {
+        console.log(file + ' file');
+        if (file) {
+            const formData = new FormData();
+            console.log(file);
+            formData.append('image', file);
+            const { data } = await axios.post('/upload', formData);
+            setImageUrl(data.url);
+            URL.revokeObjectURL(objUrl);
+
+            return data;
+        }
+
+        return null;
+    };
+
     const onSubmit = async () => {
         try {
+            const uploadData = await uploadImage();
+
             setLoading(true);
 
             //TODO - добавить error для неверных тегов, заголовка, текста
@@ -64,12 +90,16 @@ export const AddPost = () => {
 
             const fields = {
                 title,
-                imageUrl,
+                imageUrl: uploadData?.url === undefined ? '' : uploadData.url,
                 tags: cleanTags,
                 text,
             };
 
-            const {data} = isEditing
+            if (isEditing && oldImageUrl !== fields.imageUrl) {
+                fields.oldImageUrl = oldImageUrl;
+            }
+
+            const { data } = isEditing
                 ? await axios.patch(`/posts/${id}`, fields)
                 : await axios.post('/posts', fields);
 
@@ -85,10 +115,12 @@ export const AddPost = () => {
 
     useEffect(() => {
         if (id) {
-            axios.get(`/posts/${id}`).then(({data}) => {
+            axios.get(`/posts/${id}`).then(({ data }) => {
                 setTitle(data.title);
                 setText(data.text);
-                setImageUrl(data.imageUrl);
+                const url = data.imageUrl;
+                setOldImageUrl(url);
+                setImageUrl(url);
                 const dataTags = data.tags;
                 const joinedTags = dataTags.join(',');
                 setTags(joinedTags);
@@ -117,35 +149,37 @@ export const AddPost = () => {
     );
 
     if (!window.localStorage.getItem('token') && !isAuth) {
-        return <Navigate to='/'/>;
+        return <Navigate to='/' />;
     }
 
     return (
-        <Paper style={{padding: 30}}>
+        <Paper style={{ padding: 30 }}>
             <Container disableGutters={true}>
                 <Button onClick={() => inputFileRef.current.click()} variant='outlined'>
                     Загрузить обложку
                 </Button>
-                <input ref={inputFileRef} type='file' onChange={handleChangeFile} hidden/>
-                <Button disabled={!imageUrl} style={{marginLeft: 8}} onClick={onClickRemoveImage}>
+                <input ref={inputFileRef} type='file' onChange={handleChangeFile} hidden />
+                <Button disabled={!(imagePreview || imageUrl)} style={{ marginLeft: 8 }} onClick={onClickRemoveImage}>
                     Удалить
                 </Button>
             </Container>
-            {imageUrl && (
-                <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt='Uploaded'/>
-            )}
-            <br/>
-            <br/>
+            {imagePreview ? <img className={styles.image} src={imagePreview} alt='Uploaded' />
+                : (imageUrl ? <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt='Uploaded' /> :
+                    null)
+            }
+            <br />
+            <br />
             <TextField
-                classes={{root: styles.title}}
+                classes={{ root: styles.title }}
                 variant='standard'
                 placeholder='Заголовок статьи...'
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 fullWidth
+                required={true}
             />
             <TextField
-                classes={{root: styles.tags}}
+                classes={{ root: styles.tags }}
                 variant='standard'
                 placeholder='react, tech, modern'
                 helperText='Теги'

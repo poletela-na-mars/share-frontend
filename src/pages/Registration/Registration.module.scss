@@ -5,3 +5,8 @@
   justify-content: center;
   margin-bottom: 30px;
 }
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}

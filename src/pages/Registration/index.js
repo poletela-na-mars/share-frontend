@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -12,8 +12,55 @@ import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 
 import styles from './Registration.module.scss';
+import { InputAdornment } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+
+export const EmailTextField = ({errors, register}) => {
+    return (
+        <TextField
+            className={styles.field}
+            label='E-Mail'
+            fullWidth
+            error={Boolean(errors.email?.message)}
+            helperText={errors.email?.message}
+            {...register('email', {required: 'Укажите e-mail'})}
+            type='email'
+            inputProps={{maxLength: 40}}
+            required={true}
+        />
+    )
+};
+
+export const PasswordTextField = ({errors, showPassword, register, handleClickShowPassword}) => {
+    return (
+        <TextField
+            className={styles.field}
+            label='Пароль'
+            fullWidth
+            error={Boolean(errors.password?.message)}
+            helperText={errors.password?.message}
+            {...register('password', {required: 'Укажите пароль'})}
+            type={showPassword ? 'text' : 'password'}
+            required={true}
+            inputProps={{maxLength: 40}}
+            InputProps={{
+                endAdornment:
+                    <InputAdornment position='end' sx={{marginRight: 1}}>
+                        <IconButton
+                            onClick={handleClickShowPassword}
+                            edge='end'
+                        >
+                            {showPassword ? <VisibilityOff/> : <Visibility/>}
+                        </IconButton>
+                    </InputAdornment>
+            }}
+        />
+    )
+};
 
 export const Registration = () => {
+    const [showPassword, setShowPassword] = useState(false);
     const isAuth = useSelector(selectIsAuth);
     const dispatch = useDispatch();
 
@@ -44,6 +91,10 @@ export const Registration = () => {
         return <Navigate to='/'/>;
     }
 
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <Paper classes={{root: styles.root}}>
             <Typography classes={{root: styles.title}} variant='h5'>
@@ -58,30 +109,17 @@ export const Registration = () => {
                     label='Полное имя'
                     placeholder='Щукова Елена'
                     fullWidth
+                    required={true}
                     error={Boolean(errors.fullName?.message)}
                     helperText={errors.fullName?.message}
+                    inputProps={{maxLength: 40}}
                     {...register('fullName', {required: 'Укажите полное имя'})}
                 />
-                {/*TODO - добавить placeholder-ов*/}
-                <TextField
-                    className={styles.field}
-                    label='E-Mail'
-                    fullWidth
-                    error={Boolean(errors.email?.message)}
-                    helperText={errors.email?.message}
-                    {...register('email', {required: 'Укажите e-mail'})}
-                    type="email"
-                />
-                <TextField
-                    className={styles.field}
-                    label='Пароль'
-                    fullWidth
-                    error={Boolean(errors.password?.message)}
-                    helperText={errors.password?.message}
-                    {...register('password', {required: 'Укажите пароль'})}
-                />
+                <EmailTextField errors={errors} register={register}/>
+                <PasswordTextField showPassword={showPassword} handleClickShowPassword={handleClickShowPassword}
+                                   errors={errors} register={register}/>
                 <Button
-                    type="submit"
+                    type='submit'
                     size='large'
                     variant='contained'
                     disabled={!isValid}

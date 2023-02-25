@@ -40,7 +40,8 @@ export const Post = ({
     const onClickRemove = () => {
         //TODO - попап с вопросом
         if (window.confirm('Вы действительно хотите удалить статью?')) {
-            dispatch(fetchRemovePost(id));
+            dispatch(fetchRemovePost({id, imageUrl}));
+            window.location.reload();
         }
     };
 
