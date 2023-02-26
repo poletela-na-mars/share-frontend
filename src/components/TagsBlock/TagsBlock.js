@@ -14,7 +14,6 @@ import { SideBlock } from '../SideBlock';
 import { theme } from '../../theme';
 import { nanoid } from '@reduxjs/toolkit';
 
-//TODO - поиск по тегам
 //TODO - фильтрация статей по тегам
 export const TagsBlock = ({items, isLoading = true}) => {
     return (

@@ -15,6 +15,8 @@ import styles from './Post.module.scss';
 
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
+import { useState } from 'react';
+import { CustomModal } from '../Header';
 
 export const Post = ({
                          id,
@@ -32,44 +34,59 @@ export const Post = ({
                          isEditable,
                      }) => {
     const dispatch = useDispatch();
+    const [openSelectionPopup, setOpenSelectionPopup] = useState(false);
+
     if (isLoading) {
-        return <PostSkeleton/>;
+        return <PostSkeleton />;
     }
 
+    const removePostButtonClickHandler = () => {
+        setOpenSelectionPopup(true);
+    };
+
+    const closeSelectionPopupHandler = () => {
+        setOpenSelectionPopup(false);
+    };
+
+
     //TODO - некорректная страница - страница с ошибкой (несущестсвующий уже тег, страный id статьи)
-    const onClickRemove = () => {
-        //TODO - попап с вопросом
-        if (window.confirm('Вы действительно хотите удалить статью?')) {
-            dispatch(fetchRemovePost({id, imageUrl}));
-            window.location.reload();
-        }
+    const removePostHandler = () => {
+        dispatch(fetchRemovePost({ id, imageUrl }));
+        window.location.reload();
     };
 
     return (
-        <div className={clsx(styles.root, {[styles.rootFull]: isFullPost})}>
+        <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
+            <CustomModal openSelectionPopup={openSelectionPopup}
+                         closeSelectionPopupHandler={closeSelectionPopupHandler}
+                         actionHandler={removePostHandler}
+                         text='Вы действительно хотите удалить статью?'
+            />
             {isEditable && (
                 <div className={styles.editButtons}>
                     <Link to={`/posts/${id}/edit`}>
                         <IconButton color='primary'>
-                            <EditIcon/>
+                            <EditIcon />
                         </IconButton>
                     </Link>
-                    <IconButton onClick={onClickRemove} color='secondary'>
-                        <DeleteIcon/>
+                    <IconButton onClick={removePostButtonClickHandler} color='secondary'>
+                        <DeleteIcon />
                     </IconButton>
                 </div>
             )}
             {imageUrl && (
                 <img
-                    className={clsx(styles.image, {[styles.imageFull]: isFullPost})}
+                    className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
                     src={imageUrl}
                     alt={title}
                 />
             )}
             <div className={styles.wrapper}>
-                <UserInfo {...user} additionalText={wasEdited ? `${dateFormatter(createdAt)} (ред. ${dateFormatter(wasEdited)})` : dateFormatter(createdAt)}/>
+                <UserInfo {...user}
+                          additionalText={wasEdited ? `${dateFormatter(createdAt)} (ред. ${dateFormatter(wasEdited)})` :
+                              dateFormatter(createdAt)} />
                 <div className={styles.indention}>
-                    <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
+                    <h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>
                         {isFullPost ? title : <Link to={`/posts/${id}`}>{title}</Link>}
                     </h2>
                     <ul className={styles.tags}>
@@ -82,11 +99,11 @@ export const Post = ({
                     {children && <div className={styles.content}>{children}</div>}
                     <ul className={styles.postDetails}>
                         <li>
-                            <EyeIcon/>
+                            <EyeIcon />
                             <span>{viewsCount}</span>
                         </li>
                         <li>
-                            <CommentIcon/>
+                            <CommentIcon />
                             <span>{commentsCount}</span>
                         </li>
                     </ul>
