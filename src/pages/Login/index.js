@@ -12,13 +12,25 @@ import Button from '@mui/material/Button';
 
 import styles from './Login.module.scss';
 import { EmailTextField, PasswordTextField } from '../Registration';
+import { ModalWindow } from '../../components/ModalWindow/ModalWindow';
 
 export const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const isAuth = useSelector(selectIsAuth);
     const dispatch = useDispatch();
 
-    const {register, handleSubmit, setError, formState: {errors, isValid}} = useForm({
+    const [openPopup, setOpenPopup] = useState(false);
+    const [errorText, setErrorText] = useState('');
+
+    const openPopupHandler = () => {
+        setOpenPopup(true);
+    };
+
+    const closePopupHandler = () => {
+        setOpenPopup(false);
+    };
+
+    const { register, handleSubmit, setError, formState: { errors, isValid } } = useForm({
         defaultValues: {
             email: '',
             password: '',
@@ -29,9 +41,9 @@ export const Login = () => {
     const onSubmit = async (values) => {
         const data = await dispatch(fetchAuth(values));
 
-        //TODO - сделать попап с ошибкой
         if (!data.payload) {
-            return alert('Не удалось авторизоваться');
+            setErrorText('Не удалось авторизоваться. Перезагрузите страницу и попробуйте снова.');
+            openPopupHandler();
         }
 
         if ('token' in data.payload) {
@@ -40,7 +52,7 @@ export const Login = () => {
     };
 
     if (isAuth) {
-        return <Navigate to='/'/>;
+        return <Navigate to='/' />;
     }
 
     const handleClickShowPassword = () => {
@@ -48,14 +60,19 @@ export const Login = () => {
     };
 
     return (
-        <Paper classes={{root: styles.root}}>
-            <Typography classes={{root: styles.title}} variant='h5'>
+        <Paper classes={{ root: styles.root }}>
+            <ModalWindow openPopup={openPopup}
+                         closePopupHandler={closePopupHandler}
+                         text={errorText}
+                         error={true}
+            />
+            <Typography classes={{ root: styles.title }} variant='h5'>
                 Вход в аккаунт
             </Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <EmailTextField errors={errors} register={register}/>
+                <EmailTextField errors={errors} register={register} />
                 <PasswordTextField showPassword={showPassword} handleClickShowPassword={handleClickShowPassword}
-                                   errors={errors} register={register}/>
+                                   errors={errors} register={register} />
                 <Button
                     type="submit"
                     size='large'

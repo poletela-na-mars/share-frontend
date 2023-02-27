@@ -9,51 +9,8 @@ import Container from '@mui/material/Container';
 
 import styles from './Header.module.scss';
 import { theme } from '../../theme';
-import { Box, Fade, Modal, ThemeProvider } from '@mui/material';
-
-export const CustomModal = ({ openSelectionPopup, closeSelectionPopupHandler, actionHandler, text }) => {
-    const styleBoxPopup = {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 'lg',
-        bgcolor: 'background.paper',
-        borderRadius: theme.shape.lightRoundedBorderRadius,
-        p: 4,
-    };
-
-    return (
-        <Modal
-            aria-labelledby='modal-question'
-            className='selection-popup'
-            open={openSelectionPopup}
-            onClose={closeSelectionPopupHandler}
-            closeAfterTransition
-        >
-            <Fade in={openSelectionPopup}>
-                <Box sx={styleBoxPopup} className='selection-popup__paper'>
-                    <h3 className='selection-popup__question' id='modal-question'>{text}</h3>
-                    <Box component='div' className='selection-popup__buttons-container'
-                         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
-                        <Button className='selection-popup__yes-button'
-                                sx={{ marginLeft: '20px', marginRight: '20px' }}
-                                onClick={actionHandler}>Да
-                        </Button>
-                        <Button className='selection-popup__no-button'
-                                sx={{ marginLeft: '20px', marginRight: '20px' }}
-                                onClick={closeSelectionPopupHandler}>Нет
-                        </Button>
-                    </Box>
-                </Box>
-            </Fade>
-        </Modal>
-    );
-};
+import { ThemeProvider } from '@mui/material';
+import { ModalWindow } from '../ModalWindow/ModalWindow';
 
 export const Header = () => {
     const dispatch = useDispatch();
@@ -81,10 +38,11 @@ export const Header = () => {
                 <Container maxWidth='lg'>
                     <div className={styles.inner}>
 
-                        <CustomModal openSelectionPopup={openSelectionPopup}
-                                     closeSelectionPopupHandler={closeSelectionPopupHandler}
+                        <ModalWindow openPopup={openSelectionPopup}
+                                     closePopupHandler={closeSelectionPopupHandler}
                                      actionHandler={logoutHandler}
                                      text='Вы действительно хотите выйти?'
+                                     error={false}
                         />
 
                         <Link className={styles.logo} to='/'>

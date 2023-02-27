@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { fetchRemovePost } from '../../redux/slices/posts';
@@ -15,8 +16,7 @@ import styles from './Post.module.scss';
 
 import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
-import { useState } from 'react';
-import { CustomModal } from '../Header';
+import { ModalWindow } from '../ModalWindow/ModalWindow';
 
 export const Post = ({
                          id,
@@ -57,10 +57,11 @@ export const Post = ({
 
     return (
         <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
-            <CustomModal openSelectionPopup={openSelectionPopup}
-                         closeSelectionPopupHandler={closeSelectionPopupHandler}
+            <ModalWindow openPopup={openSelectionPopup}
+                         closePopupHandler={closeSelectionPopupHandler}
                          actionHandler={removePostHandler}
                          text='Вы действительно хотите удалить статью?'
+                         error={false}
             />
             {isEditable && (
                 <div className={styles.editButtons}>

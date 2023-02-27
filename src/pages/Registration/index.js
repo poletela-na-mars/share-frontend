@@ -15,6 +15,7 @@ import styles from './Registration.module.scss';
 import { InputAdornment } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { ModalWindow } from '../../components/ModalWindow/ModalWindow';
 
 export const EmailTextField = ({errors, register}) => {
     return (
@@ -64,6 +65,17 @@ export const Registration = () => {
     const isAuth = useSelector(selectIsAuth);
     const dispatch = useDispatch();
 
+    const [openPopup, setOpenPopup] = useState(false);
+    const [errorText, setErrorText] = useState('');
+
+    const openPopupHandler = () => {
+        setOpenPopup(true);
+    };
+
+    const closePopupHandler = () => {
+        setOpenPopup(false);
+    };
+
     //TODO - setError - добавить ошибки валидации из бэка + в Login
     const {register, handleSubmit, setError, formState: {errors, isValid}} = useForm({
         defaultValues: {
@@ -77,9 +89,9 @@ export const Registration = () => {
     const onSubmit = async (values) => {
         const data = await dispatch(fetchRegister(values));
 
-        //TODO - сделать попап с ошибкой
         if (!data.payload) {
-            return alert('Не удалось зарегистрироваться');
+            setErrorText('Не удалось зарегистрироваться. Перезагрузите страницу и попробуйте снова.');
+            openPopupHandler();
         }
 
         if ('token' in data.payload) {
@@ -97,6 +109,11 @@ export const Registration = () => {
 
     return (
         <Paper classes={{root: styles.root}}>
+            <ModalWindow openPopup={openPopup}
+                         closePopupHandler={closePopupHandler}
+                         text={errorText}
+                         error={true}
+            />
             <Typography classes={{root: styles.title}} variant='h5'>
                 Создание аккаунта
             </Typography>

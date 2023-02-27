@@ -13,6 +13,9 @@ import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
 import Container from '@mui/material/Container';
+import { ThemeProvider } from '@mui/material';
+import { theme } from '../../theme';
+import { ModalWindow } from '../../components/ModalWindow/ModalWindow';
 
 export const AddPost = () => {
     const navigate = useNavigate();
@@ -29,6 +32,17 @@ export const AddPost = () => {
     const [objUrl, setObjUrl] = useState('');
     const inputFileRef = useRef(null);
 
+    const [openPopup, setOpenPopup] = useState(false);
+    const [errorText, setErrorText] = useState('');
+
+    const openPopupHandler = () => {
+        setOpenPopup(true);
+    };
+
+    const closePopupHandler = () => {
+        setOpenPopup(false);
+    };
+
     const isEditing = Boolean(id);
 
     const handleChangeFile = async (event) => {
@@ -41,8 +55,8 @@ export const AddPost = () => {
             setImagePreview(createdObjUrl);
         } catch (err) {
             console.error(err);
-            //TODO - попап для ошибки
-            alert('Ошибка при загрузке файла');
+            setErrorText('Ошибка при загрузке файла. Перезагрузите страницу и попробуйте снова.');
+            openPopupHandler();
         }
     };
 
@@ -108,8 +122,8 @@ export const AddPost = () => {
             navigate(`/posts/${_id}`);
         } catch (err) {
             console.error(err);
-            //TODO - попап для ошибки
-            alert('Ошибка при создании статьи');
+            setErrorText('Ошибка при создании статьи. Перезагрузите страницу и попробуйте снова.');
+            openPopupHandler();
         }
     };
 
@@ -126,8 +140,8 @@ export const AddPost = () => {
                 setTags(joinedTags);
             }).catch((err) => {
                 console.error(err);
-                //TODO - попап с ошибкой
-                alert('Ошибка при получении статьи')
+                setErrorText('Ошибка при получении статьи. Перезагрузите страницу.');
+                openPopupHandler();
             });
         }
     }, [id]);
@@ -153,54 +167,63 @@ export const AddPost = () => {
     }
 
     return (
-        <Paper style={{ padding: 30 }}>
-            <Container disableGutters={true}>
-                <Button onClick={() => inputFileRef.current.click()} variant='outlined'>
-                    Загрузить обложку
-                </Button>
-                <input ref={inputFileRef} type='file' onChange={handleChangeFile} hidden />
-                <Button disabled={!(imagePreview || imageUrl)} style={{ marginLeft: 8 }} onClick={onClickRemoveImage}>
-                    Удалить
-                </Button>
-            </Container>
-            {imagePreview ? <img className={styles.image} src={imagePreview} alt='Uploaded' />
-                : (imageUrl ? <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt='Uploaded' /> :
-                    null)
-            }
-            <br />
-            <br />
-            <TextField
-                classes={{ root: styles.title }}
-                variant='standard'
-                placeholder='Заголовок статьи...'
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                fullWidth
-                required={true}
-            />
-            <TextField
-                classes={{ root: styles.tags }}
-                variant='standard'
-                placeholder='react, tech, modern'
-                helperText='Теги'
-                value={tags}
-                onChange={(e) => setTags(e.target.value)}
-                fullWidth
-            />
-            <SimpleMDE
-                className={styles.editor}
-                value={text}
-                onChange={onChange}
-                options={options}
-            />
-            <div className={styles.buttons}>
-                <Button onClick={onSubmit} size='large' variant='contained'>
-                    {isEditing ? 'Сохранить' : 'Опубликовать'}
-                </Button>
-                <a href='/'>
-                    <Button size='large'>Отмена</Button>
-                </a>
-            </div>
-        </Paper>
+        <ThemeProvider theme={theme}>
+            <Paper style={{ padding: 30 }}>
+                <ModalWindow openPopup={openPopup}
+                             closePopupHandler={closePopupHandler}
+                             text={errorText}
+                             error={true}
+                />
+                <Container disableGutters={true}>
+                    <Button onClick={() => inputFileRef.current.click()} variant='outlined'>
+                        Загрузить обложку
+                    </Button>
+                    <input ref={inputFileRef} type='file' onChange={handleChangeFile} hidden />
+                    <Button disabled={!(imagePreview || imageUrl)} style={{ marginLeft: 8 }}
+                            onClick={onClickRemoveImage}>
+                        Удалить
+                    </Button>
+                </Container>
+                {imagePreview ? <img className={styles.image} src={imagePreview} alt='Uploaded' />
+                    : (imageUrl ?
+                        <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt='Uploaded' /> :
+                        null)
+                }
+                <br />
+                <br />
+                <TextField
+                    classes={{ root: styles.title }}
+                    variant='standard'
+                    placeholder='Заголовок статьи...'
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    fullWidth
+                    required={true}
+                />
+                <TextField
+                    classes={{ root: styles.tags }}
+                    variant='standard'
+                    placeholder='react, tech, modern'
+                    helperText='Теги'
+                    value={tags}
+                    onChange={(e) => setTags(e.target.value)}
+                    fullWidth
+                />
+                <SimpleMDE
+                    className={styles.editor}
+                    value={text}
+                    onChange={onChange}
+                    options={options}
+                />
+                <div className={styles.buttons}>
+                    <Button onClick={onSubmit} size='large' variant='contained'>
+                        {isEditing ? 'Сохранить' : 'Опубликовать'}
+                    </Button>
+                    <a href='/'>
+                        <Button size='large'>Отмена</Button>
+                    </a>
+                </div>
+            </Paper>
+        </ThemeProvider>
     );
 };
