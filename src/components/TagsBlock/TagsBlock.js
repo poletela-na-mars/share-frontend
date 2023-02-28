@@ -14,13 +14,12 @@ import { SideBlock } from '../SideBlock';
 import { theme } from '../../theme';
 import { nanoid } from '@reduxjs/toolkit';
 
-//TODO - фильтрация статей по тегам
-export const TagsBlock = ({items, isLoading = true}) => {
+export const TagsBlock = ({ items, isLoading = true, changeSelectedTag, tag }) => {
     return (
         <SideBlock title='Теги'>
             <List
                 className={styles.list}
-                style={{maxHeight: 300, overflow: 'auto'}}
+                style={{ maxHeight: 300, overflow: 'auto' }}
                 sx={{
                     '&::-webkit-scrollbar': {
                         width: '0.4em'
@@ -36,24 +35,27 @@ export const TagsBlock = ({items, isLoading = true}) => {
                 }}
             >
                 {(isLoading ? [...Array(5)] : items).filter((x, i, a) => a.indexOf(x) === i).map((name) => (
-                    <a
-                        style={{textDecoration: 'none', color: 'black'}}
-                        href={`/tags/${name}`}
+                    <span
+                        style={{ textDecoration: 'none', color: 'black' }}
                         key={nanoid()}
                     >
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton
+                                onClick={() => {
+                                    changeSelectedTag(name);
+                                }}
+                                selected={tag === name}>
                                 <ListItemIcon>
-                                    <TagIcon/>
+                                    <TagIcon />
                                 </ListItemIcon>
                                 {isLoading ? (
-                                    <Skeleton width={100}/>
+                                    <Skeleton width={100} />
                                 ) : (
-                                    <ListItemText primary={name}/>
+                                    <ListItemText primary={name} />
                                 )}
                             </ListItemButton>
                         </ListItem>
-                    </a>
+                    </span>
                 ))}
             </List>
         </SideBlock>

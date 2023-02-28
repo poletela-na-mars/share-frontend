@@ -7,11 +7,23 @@ import ReactMarkdown from 'react-markdown';
 import { Post } from '../components';
 import { Index } from '../components';
 import { CommentsBlock } from '../components';
+import { ModalWindow } from '../components/ModalWindow/ModalWindow';
 
 export const FullPost = () => {
     const [data, setData] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    const {id} = useParams();
+    const { id } = useParams();
+
+    const [openPopup, setOpenPopup] = useState(false);
+    const [errorText, setErrorText] = useState('');
+
+    const openPopupHandler = () => {
+        setOpenPopup(true);
+    };
+
+    const closePopupHandler = () => {
+        setOpenPopup(false);
+    };
 
     useEffect(() => {
         axios.get(`posts/${id}`).then((res) => {
@@ -19,13 +31,22 @@ export const FullPost = () => {
             setIsLoading(false);
         }).catch((err) => {
             console.error(err);
-            alert('Ошибка при получении статьи');
-            //TODO -другое оповещение
+            setErrorText('Ошибка при получении статьи. Перезагрузите страницу.');
+            openPopupHandler();
         });
     }, [id]);
 
     if (isLoading) {
-        return <Post isLoading={isLoading}/>;
+        return (
+            <>
+                <ModalWindow openPopup={openPopup}
+                             closePopupHandler={closePopupHandler}
+                             text={errorText}
+                             error={true}
+                />
+                <Post isLoading={isLoading} />
+            </>
+        );
     }
 
     return (
@@ -63,7 +84,7 @@ export const FullPost = () => {
                 ]}
                 isLoading={false}
             >
-                <Index/>
+                <Index />
             </CommentsBlock>
         </>
     );

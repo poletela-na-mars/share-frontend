@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios';
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (sortQuery) => {
-    const {data} = await axios.get('/posts', {params: {sort: sortQuery}});
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async ({sortQuery, selectedTag}) => {
+    const {data} = await axios.get('/posts', {params: {sort: sortQuery, tag: selectedTag}});
     return data;
 });
 

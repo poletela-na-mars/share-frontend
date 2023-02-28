@@ -12,40 +12,61 @@ import { CommentsBlock, Post, TagsBlock } from '../components';
 
 export const Home = () => {
     const [tabValue, setTabValue] = useState(0);
+    const [tag, setTag] = useState('');
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.auth.data);
-    const {posts, tags} = useSelector((state) => state.posts);
+    const { posts, tags } = useSelector((state) => state.posts);
 
     const isPostsLoading = posts.status === 'loading';
     const isTagsLoading = tags.status === 'loading';
 
     useEffect(() => {
             let sortQuery;
-            tabValue === 0 ? sortQuery = 'new' : sortQuery = 'popular';
-            dispatch(fetchPosts(sortQuery));
-        }, [dispatch, tabValue]
+            let selectedTag;
+            switch (tabValue) {
+                case 0:
+                    sortQuery = 'new';
+                    break;
+                case 1:
+                    sortQuery = 'popular';
+                    break;
+                case 2:
+                    sortQuery = 'tag';
+                    break;
+            }
+
+            selectedTag = tag;
+            dispatch(fetchPosts({ sortQuery, selectedTag }));
+        }, [dispatch, tabValue, tag]
     );
+
+    const changeSelectedTag = (value) => {
+        setTag(value);
+        setTabValue(2);
+    }
 
     useEffect(() => {
         dispatch(fetchTags());
     }, [dispatch]);
 
     const handleTabValueChange = (e, tabValue) => {
+        setTag('');
         setTabValue(tabValue);
     };
 
     //TODO - lazy loading
     return (
         <>
-            <Tabs style={{marginBottom: 15}} value={tabValue} onChange={handleTabValueChange} aria-label='tabs'>
-                <Tab label='Новые'/>
-                <Tab label='Популярные'/>
+            <Tabs style={{ marginBottom: 15 }} value={tabValue} onChange={handleTabValueChange} aria-label='tabs'>
+                <Tab label='Новые' />
+                <Tab label='Популярные' />
+                <Tab label='По тегам' disabled={true} />
             </Tabs>
             <Grid container spacing={4}>
                 <Grid xs={8} item>
                     {(isPostsLoading ? [...Array(5)] : posts.items).map((obj, idx) =>
                         isPostsLoading ? (
-                            <Post key={idx} isLoading={true}/>
+                            <Post key={idx} isLoading={true} />
                         ) : (
                             <Post
                                 key={obj._id}
@@ -64,7 +85,11 @@ export const Home = () => {
                     )}
                 </Grid>
                 <Grid xs={4} item>
-                    <TagsBlock items={tags.items} isLoading={isTagsLoading}/>
+                    <TagsBlock
+                        items={tags.items}
+                        changeSelectedTag={changeSelectedTag}
+                        tag={tag}
+                        isLoading={isTagsLoading} />
                     <CommentsBlock
                         items={[
                             {
@@ -79,7 +104,7 @@ export const Home = () => {
                                     fullName: 'Иван Иванов',
                                     avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
                                 },
-                                text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
+                                text: 'Выровнять аватарку с длинным комментарием. Потому что очень длинно - это плохо, например, 3 линии комментариев.',
                             },
                         ]}
                         isLoading={false}
