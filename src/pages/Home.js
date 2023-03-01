@@ -8,7 +8,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 
-import { CommentsBlock, Post, TagsBlock } from '../components';
+import { Post, TagsBlock } from '../components';
 
 export const Home = () => {
     const [tabValue, setTabValue] = useState(0);
@@ -43,7 +43,7 @@ export const Home = () => {
     const changeSelectedTag = (value) => {
         setTag(value);
         setTabValue(2);
-    }
+    };
 
     useEffect(() => {
         dispatch(fetchTags());
@@ -89,25 +89,7 @@ export const Home = () => {
                         items={tags.items}
                         changeSelectedTag={changeSelectedTag}
                         tag={tag}
-                        isLoading={isTagsLoading} />
-                    <CommentsBlock
-                        items={[
-                            {
-                                user: {
-                                    fullName: 'Вася Пупкин',
-                                    avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-                                },
-                                text: 'Это тестовый комментарий',
-                            },
-                            {
-                                user: {
-                                    fullName: 'Иван Иванов',
-                                    avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
-                                },
-                                text: 'Выровнять аватарку с длинным комментарием. Потому что очень длинно - это плохо, например, 3 линии комментариев.',
-                            },
-                        ]}
-                        isLoading={false}
+                        isLoading={isTagsLoading}
                     />
                 </Grid>
             </Grid>

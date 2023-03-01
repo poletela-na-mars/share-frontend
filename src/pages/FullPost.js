@@ -17,6 +17,7 @@ export const FullPost = () => {
     const [lastComment, setLastComment] = useState({});
     const { id } = useParams();
     const isAuth = useSelector(selectIsAuth);
+    const userData = useSelector((state) => state.auth.data);
 
     const [openPopup, setOpenPopup] = useState(false);
     const [errorText, setErrorText] = useState('');
@@ -74,27 +75,11 @@ export const FullPost = () => {
                 <ReactMarkdown children={data.text} />
             </Post>
             <CommentsBlock
-                // items={[
-                //     {
-                //         user: {
-                //             fullName: 'Вася Пупкин',
-                //             avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-                //         },
-                //         text: 'Это тестовый комментарий 555555',
-                //     },
-                //     {
-                //         user: {
-                //             fullName: 'Иван Иванов',
-                //             avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
-                //         },
-                //         text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-                //     },
-                // ]}
                 items={(isLoading ? [...Array(2)] : data.comments).map((obj) => {
                     return {
                         user: {
                             fullName: obj.author,
-                            avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
+                            avatarUrl: obj.avatarUrl,
                         },
                         text: obj.text,
 
@@ -102,7 +87,7 @@ export const FullPost = () => {
                 })}
                 isLoading={false}
             >
-                {isAuth && <Index updateLastComment={updateLastComment} />}
+                {isAuth && <Index author={userData.fullName} updateLastComment={updateLastComment} />}
             </CommentsBlock>
         </>
     );

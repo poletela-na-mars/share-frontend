@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
 
 
-export const Index = ({updateLastComment}) => {
+export const Index = ({ updateLastComment, author }) => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const [comment, setComment] = useState('');
@@ -57,7 +57,7 @@ export const Index = ({updateLastComment}) => {
             <div className={styles.root}>
                 <Avatar
                     classes={{ root: styles.avatar }}
-                    src='https://mui.com/static/images/avatar/5.jpg'
+                    src={`/avatars/${author.charAt(0).toLowerCase()}.png`}
                 />
                 <div className={styles.form}>
                     <TextField

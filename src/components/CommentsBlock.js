@@ -9,9 +9,7 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Skeleton from '@mui/material/Skeleton';
 
-//TODO - отображение всех комментариев из статей
-//TODO - аватарки
-export const CommentsBlock = ({items, children, isLoading = true}) => {
+export const CommentsBlock = ({ items, children, isLoading = true }) => {
     return (
         <SideBlock title='Комментарии'>
             <List>
@@ -20,15 +18,16 @@ export const CommentsBlock = ({items, children, isLoading = true}) => {
                         <ListItem alignItems='flex-start'>
                             <ListItemAvatar>
                                 {isLoading ? (
-                                    <Skeleton variant='circular' width={40} height={40}/>
+                                    <Skeleton variant='circular' width={40} height={40} />
                                 ) : (
-                                    <Avatar alt={obj.user.fullName} src={obj.user.avatarUrl}/>
+                                    <Avatar alt={obj.user.fullName}
+                                            src={`/avatars/${obj.user.fullName.charAt(0).toLowerCase()}.png`} />
                                 )}
                             </ListItemAvatar>
                             {isLoading ? (
-                                <div style={{display: 'flex', flexDirection: 'column'}}>
-                                    <Skeleton variant='text' height={25} width={120}/>
-                                    <Skeleton variant='text' height={18} width={230}/>
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    <Skeleton variant='text' height={25} width={120} />
+                                    <Skeleton variant='text' height={18} width={230} />
                                 </div>
                             ) : (
                                 <ListItemText
@@ -37,7 +36,7 @@ export const CommentsBlock = ({items, children, isLoading = true}) => {
                                 />
                             )}
                         </ListItem>
-                        <Divider variant='inset' component='li'/>
+                        <Divider variant='inset' component='li' />
                     </Fragment>
                 ))}
             </List>
