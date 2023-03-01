@@ -10,12 +10,12 @@ import List from '@mui/material/List';
 import Skeleton from '@mui/material/Skeleton';
 
 //TODO - отображение всех комментариев из статей
-//TODO - реализовать комментарии + аватарка
+//TODO - аватарки
 export const CommentsBlock = ({items, children, isLoading = true}) => {
     return (
         <SideBlock title='Комментарии'>
             <List>
-                {(isLoading ? [...Array(5)] : items).map((obj, index) => (
+                {(isLoading ? [...Array(2)] : items).map((obj, index) => (
                     <Fragment key={index}>
                         <ListItem alignItems='flex-start'>
                             <ListItemAvatar>

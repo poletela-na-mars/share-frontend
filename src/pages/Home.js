@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -77,7 +77,7 @@ export const Home = () => {
                                 createdAt={obj.createdAt}
                                 wasEdited={obj.wasEdited}
                                 viewsCount={obj.viewsCount}
-                                commentsCount={3}
+                                commentsCount={obj.commentsCount}
                                 tags={obj.tags}
                                 isEditable={userData?._id === obj.user._id}
                             />
