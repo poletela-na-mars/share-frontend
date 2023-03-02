@@ -55,7 +55,7 @@ export const AddPost = () => {
             setImagePreview(createdObjUrl);
         } catch (err) {
             console.error(err);
-            setErrorText('Ошибка при загрузке файла. Перезагрузите страницу и попробуйте снова.');
+            setErrorText('Ошибка при загрузке файла.\nПерезагрузите страницу и попробуйте снова.');
             openPopupHandler();
         }
     };
@@ -122,7 +122,7 @@ export const AddPost = () => {
             navigate(`/posts/${_id}`);
         } catch (err) {
             console.error(err);
-            setErrorText('Ошибка при создании статьи. Перезагрузите страницу и попробуйте снова.');
+            setErrorText('Ошибка при создании статьи.\nПерезагрузите страницу и попробуйте снова.');
             openPopupHandler();
         }
     };
@@ -140,7 +140,7 @@ export const AddPost = () => {
                 setTags(joinedTags);
             }).catch((err) => {
                 console.error(err);
-                setErrorText('Ошибка при получении статьи. Перезагрузите страницу.');
+                setErrorText('Ошибка при получении статьи.\nПерезагрузите страницу.');
                 openPopupHandler();
             });
         }

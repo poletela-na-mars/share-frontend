@@ -11,6 +11,7 @@ import { Index } from '../components';
 import { CommentsBlock } from '../components';
 import { ModalWindow } from '../components/ModalWindow/ModalWindow';
 
+//TODO - сделать изображение меньше + попап по клику для увеличения
 export const FullPost = () => {
     const [data, setData] = useState();
     const [isLoading, setIsLoading] = useState(true);
@@ -40,7 +41,11 @@ export const FullPost = () => {
             setIsLoading(false);
         }).catch((err) => {
             console.error(err);
-            setErrorText('Ошибка при получении статьи. Перезагрузите страницу.');
+            if (err.response.status === 404) {
+                setErrorText('Статья не найдена. Проверьте url-адрес страницы.')
+            } else {
+                setErrorText('Ошибка при получении статьи.\nПерезагрузите страницу.');
+            }
             openPopupHandler();
         });
     }, [id, lastComment]);

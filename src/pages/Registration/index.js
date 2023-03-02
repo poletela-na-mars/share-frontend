@@ -87,15 +87,19 @@ export const Registration = () => {
     });
 
     const onSubmit = async (values) => {
-        const data = await dispatch(fetchRegister(values));
+        try {
+            const data = await dispatch(fetchRegister(values));
 
-        if (!data.payload) {
-            setErrorText('Не удалось зарегистрироваться. Перезагрузите страницу и попробуйте снова.');
-            openPopupHandler();
-        }
+            if (!data.payload) {
+                setErrorText('Не удалось зарегистрироваться.\nПерезагрузите страницу и попробуйте снова.');
+                openPopupHandler();
+            }
 
-        if ('token' in data.payload) {
-            window.localStorage.setItem('token', data.payload.token);
+            if ('token' in data.payload) {
+                window.localStorage.setItem('token', data.payload.token);
+            }
+        } catch (err) {
+            console.error(err);
         }
     };
 

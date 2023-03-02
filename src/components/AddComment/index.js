@@ -42,7 +42,7 @@ export const Index = ({ updateLastComment, author }) => {
             updateLastComment(fields);
         } catch (err) {
             console.error(err);
-            setErrorText('Ошибка при создании комментария. Перезагрузите страницу и попробуйте снова.');
+            setErrorText('Ошибка при создании комментария.\nПерезагрузите страницу и попробуйте снова.');
             openPopupHandler();
         }
     };

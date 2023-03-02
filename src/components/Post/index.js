@@ -48,8 +48,6 @@ export const Post = ({
         setOpenSelectionPopup(false);
     };
 
-
-    //TODO - некорректная страница - страница с ошибкой (несущестсвующий уже тег, страный id статьи)
     const removePostHandler = () => {
         dispatch(fetchRemovePost({ id, imageUrl }));
         window.location.reload();

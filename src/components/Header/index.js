@@ -25,7 +25,6 @@ export const Header = () => {
         setOpenSelectionPopup(false);
     };
 
-    //TODO - не показывает ошибки, когда неправильный e-mail или пароль
     const logoutHandler = () => {
         dispatch(logout());
         window.localStorage.removeItem('token');

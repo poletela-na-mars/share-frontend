@@ -42,7 +42,7 @@ export const Login = () => {
         const data = await dispatch(fetchAuth(values));
 
         if (!data.payload) {
-            setErrorText('Не удалось авторизоваться. Перезагрузите страницу и попробуйте снова.');
+            setErrorText('Не удалось авторизоваться.\nПроверьте введенные данные и попробуйте снова.');
             openPopupHandler();
         }
 

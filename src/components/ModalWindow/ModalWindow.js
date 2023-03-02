@@ -2,8 +2,6 @@ import { theme } from '../../theme';
 import { Box, Fade, Modal } from '@mui/material';
 import Button from '@mui/material/Button';
 
-//TODO - перенос строки в тексте ошибок в попапах
-
 export const ModalWindow = ({ openPopup, closePopupHandler, actionHandler, text, error }) => {
     const styleBoxPopup = {
         display: 'flex',
@@ -17,7 +15,8 @@ export const ModalWindow = ({ openPopup, closePopupHandler, actionHandler, text,
         width: 'lg',
         bgcolor: 'background.paper',
         borderRadius: theme.shape.lightRoundedBorderRadius,
-        p: 4,
+        whiteSpace: 'pre-wrap',
+    p: 4,
     };
 
     return (
