@@ -8,14 +8,14 @@
   margin-bottom: 15px;
   position: relative;
 
-  &:hover {
-    //border: 1px solid $light-green-color;
-    //box-shadow: 0 0 0 1px $light-green-color;
-
-    .editButtons {
-      opacity: 1;
-    }
-  }
+  //&:hover {
+  //  //border: 1px solid $light-green-color;
+  //  //box-shadow: 0 0 0 1px $light-green-color;
+  //
+  //  .editButtons {
+  //    opacity: 1;
+  //  }
+  //}
 
   &Full {
     &:hover {
@@ -59,6 +59,10 @@
 .title {
   font-size: 28px;
   margin: 0;
+  word-break: break-all;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 
   a {
     text-decoration: none;
@@ -153,8 +157,7 @@
   position: absolute;
   right: 15px;
   top: 15px;
-  background-color: rgba(255, 255, 255, 1);
-  border-radius: 10px;
-  opacity: 0;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
   transition: all 0.15s ease-in-out;
 }

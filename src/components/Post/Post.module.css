@@ -6,9 +6,6 @@
   margin-bottom: 15px;
   position: relative;
 }
-.root:hover .editButtons {
-  opacity: 1;
-}
 .rootFull:hover {
   background-color: #fff;
   border: 1px solid #dedede;
@@ -45,6 +42,10 @@
 .title {
   font-size: 28px;
   margin: 0;
+  word-break: break-all;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
 .title a {
   text-decoration: none;
@@ -127,9 +128,8 @@
   position: absolute;
   right: 15px;
   top: 15px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 10px;
-  opacity: 0;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
   transition: all 0.15s ease-in-out;
 }
 
