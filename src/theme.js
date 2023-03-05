@@ -20,7 +20,7 @@ export const theme = createTheme({
     shape: {
         lightRoundedBorderRadius: '20px',
         roundedBorderRadius: '50px',
-        borderRadius: 6,
+        borderRadius: '6px',
     },
 });
 

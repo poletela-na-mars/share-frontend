@@ -118,12 +118,14 @@ export const Registration = () => {
                          text={errorText}
                          error={true}
             />
+            <Avatar
+                alt='logo'
+                sx={{ width: 56, height: 56, marginBottom: '20px' }}
+                src={'/logo.png'}
+            />
             <Typography classes={{root: styles.title}} variant='h5'>
                 Создание аккаунта
             </Typography>
-            <div className={styles.avatar}>
-                <Avatar sx={{width: 100, height: 100}}/>
-            </div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     className={styles.field}

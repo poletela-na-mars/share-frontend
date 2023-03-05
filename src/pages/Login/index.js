@@ -4,6 +4,10 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
+import { EmailTextField, PasswordTextField } from '../Registration';
+import { ModalWindow } from '../../components/ModalWindow/ModalWindow';
+import Avatar from '@mui/material/Avatar';
+
 import { fetchAuth, selectIsAuth } from '../../redux/slices/auth';
 
 import Typography from '@mui/material/Typography';
@@ -11,8 +15,6 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
 import styles from './Login.module.scss';
-import { EmailTextField, PasswordTextField } from '../Registration';
-import { ModalWindow } from '../../components/ModalWindow/ModalWindow';
 
 export const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -65,6 +67,11 @@ export const Login = () => {
                          closePopupHandler={closePopupHandler}
                          text={errorText}
                          error={true}
+            />
+            <Avatar
+                alt='logo'
+                sx={{ width: 56, height: 56, marginBottom: '20px' }}
+                src={'/logo.png'}
             />
             <Typography classes={{ root: styles.title }} variant='h5'>
                 Вход в аккаунт

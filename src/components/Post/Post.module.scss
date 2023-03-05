@@ -33,8 +33,14 @@
 
   &Full {
     min-height: 300px;
-    height: 100%;
+    max-height: 80vh;
+    max-width: 80vw;
+    margin: 20px;
   }
+}
+
+.minImageFullPost {
+  cursor: pointer;
 }
 
 .wrapper {
@@ -160,4 +166,10 @@
   background-color: rgba(255, 255, 255, 0.85);
   border-radius: 50%;
   transition: all 0.15s ease-in-out;
+}
+
+.closePicButton {
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }

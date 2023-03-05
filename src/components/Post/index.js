@@ -17,6 +17,7 @@ import { Menu, MenuItem, styled, ThemeProvider } from '@mui/material';
 
 import styles from './Post.module.scss';
 import { theme } from '../../theme';
+import { ModalPicture } from '../ModalPicture/ModalPicture';
 
 const StyledPostMenu = styled((props) => (
     <Menu
@@ -60,6 +61,7 @@ export const Post = ({
                      }) => {
     const dispatch = useDispatch();
     const [openSelectionPopup, setOpenSelectionPopup] = useState(false);
+    const [openPicture, setOpenPicture] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const isOpenedPostMenu = Boolean(anchorEl);
 
@@ -79,6 +81,10 @@ export const Post = ({
         setAnchorEl(null);
     };
 
+    const closePictureHandler = () => {
+        setOpenPicture(false);
+    };
+
     const removePostHandler = () => {
         dispatch(fetchRemovePost({ id, imageUrl }));
         window.location.reload();
@@ -93,6 +99,8 @@ export const Post = ({
                              text='Вы действительно хотите удалить статью?'
                              error={false}
                 />
+                <ModalPicture openPopup={openPicture} closePopupHandler={closePictureHandler} src={imageUrl}
+                              title={title} />
                 {isEditable && (
                     <div className={styles.editButtons}>
                         <IconButton
@@ -117,12 +125,18 @@ export const Post = ({
                         </StyledPostMenu>
                     </div>
                 )}
-                {imageUrl && (
-                    <img
-                        className={clsx(styles.image, { [styles.imageFull]: isFullPost })}
+                {imageUrl && (isFullPost ? (
+                        <img
+                            className={clsx(styles.image, styles.minImageFullPost)}
+                            src={imageUrl}
+                            alt={title}
+                            onClick={() => setOpenPicture(true)}
+                        />
+                    ) : (<img
+                        className={styles.image}
                         src={imageUrl}
                         alt={title}
-                    />
+                    />)
                 )}
                 <div className={styles.wrapper}>
                     <UserInfo {...user}
