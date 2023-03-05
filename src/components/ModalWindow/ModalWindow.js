@@ -16,7 +16,8 @@ export const ModalWindow = ({ openPopup, closePopupHandler, actionHandler, text,
         bgcolor: 'background.paper',
         borderRadius: theme.shape.lightRoundedBorderRadius,
         whiteSpace: 'pre-wrap',
-    p: 4,
+        outline: 'none',
+        p: 4,
     };
 
     return (

@@ -6,12 +6,9 @@ import { selectIsAuth } from '../redux/slices/auth';
 import axios from '../axios';
 import ReactMarkdown from 'react-markdown';
 
-import { Post } from '../components';
-import { Index } from '../components';
-import { CommentsBlock } from '../components';
+import { CommentsBlock, Post } from '../components';
 import { ModalWindow } from '../components/ModalWindow/ModalWindow';
 
-//TODO - сделать изображение меньше + попап по клику для увеличения
 export const FullPost = () => {
     const [data, setData] = useState();
     const [isLoading, setIsLoading] = useState(true);
@@ -92,7 +89,7 @@ export const FullPost = () => {
                 })}
                 isLoading={false}
             >
-                {isAuth && <Index author={userData.fullName} updateLastComment={updateLastComment} />}
+                {isAuth && <ModalWindow author={userData.fullName} updateLastComment={updateLastComment} />}
             </CommentsBlock>
         </>
     );

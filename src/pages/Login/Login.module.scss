@@ -1,4 +1,8 @@
 .root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 400px;
   padding: 50px;
   border: 1px solid #dedede;
