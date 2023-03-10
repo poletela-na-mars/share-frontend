@@ -76,13 +76,6 @@
   margin-right: 15px;
   opacity: 0.5;
 }
-.tags li:hover {
-  opacity: 1;
-}
-.tags li a {
-  text-decoration: none;
-  color: #252525;
-}
 
 .postDetails {
   list-style: none;

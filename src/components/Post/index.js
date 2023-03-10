@@ -11,13 +11,13 @@ import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { UserInfo } from '../UserInfo';
+import { ModalPicture } from '../ModalPicture/ModalPicture';
 import { PostSkeleton } from './Skeleton';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { Menu, MenuItem, styled, ThemeProvider } from '@mui/material';
 
 import styles from './Post.module.scss';
 import { theme } from '../../theme';
-import { ModalPicture } from '../ModalPicture/ModalPicture';
 
 const StyledPostMenu = styled((props) => (
     <Menu
@@ -150,7 +150,7 @@ export const Post = ({
                         <ul className={styles.tags}>
                             {tags.map((name) => (
                                 <li key={name}>
-                                    <Link to={`/tag/${name}`}>#{name}</Link>
+                                    #{name}
                                 </li>
                             ))}
                         </ul>

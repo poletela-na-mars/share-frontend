@@ -8,7 +8,10 @@ export const theme = createTheme({
             light: '#006666',
         },
         gray: {
-          dark: 'rgba(0,0,0,.1)',
+            dark: 'rgba(0,0,0,.1)',
+        },
+        light: {
+            light: '#FFF',
         },
     },
     typography: {
@@ -20,7 +23,7 @@ export const theme = createTheme({
     shape: {
         lightRoundedBorderRadius: '20px',
         roundedBorderRadius: '50px',
-        borderRadius: '6px',
+        borderRadius: 6,
     },
 });
 

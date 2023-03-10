@@ -9,13 +9,18 @@ import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import SimpleMDE from 'react-simplemde-editor';
-
-import 'easymde/dist/easymde.min.css';
-import styles from './AddPost.module.scss';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material';
+import { ModalWindow } from '../../components';
+import 'easymde/dist/easymde.min.css';
+
+import styles from './AddPost.module.scss';
 import { theme } from '../../theme';
-import { ModalWindow } from '../../components/ModalWindow/ModalWindow';
+
+function InvalidFileError(message) {
+    this.name = 'InvalidFileError';
+    this.message = message;
+}
 
 export const AddPost = () => {
     const navigate = useNavigate();
@@ -31,6 +36,8 @@ export const AddPost = () => {
     const [file, setFile] = useState('');
     const [objUrl, setObjUrl] = useState('');
     const inputFileRef = useRef(null);
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [openPopup, setOpenPopup] = useState(false);
     const [errorText, setErrorText] = useState('');
@@ -49,13 +56,29 @@ export const AddPost = () => {
         try {
             const targetFile = event.target.files[0];
             const createdObjUrl = URL.createObjectURL(targetFile);
+
+            if (targetFile.type !== 'image/jpeg' && targetFile.type !== 'image/png') {
+                throw new InvalidFileError('Недопустимый формат файла.');
+            }
+
+            const reFileName = /^[А-яёЁ a-zA-Z0-9_-]{1,80}\.[a-zA-Z]{1,8}$/;
+            if (!reFileName.test(targetFile.name)) {
+                throw new InvalidFileError('Недопустимое имя или расширение файла.');
+            }
+
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            const minSize = 5 * 1024;
+            if (targetFile.size >= maxSize || targetFile.size <= minSize) {
+                throw new InvalidFileError('Изображение слишком большое или слишком маленькое.');
+            }
+
             setFile(targetFile);
             setObjUrl(createdObjUrl);
             setImageUrl('');
             setImagePreview(createdObjUrl);
         } catch (err) {
             console.error(err);
-            setErrorText('Ошибка при загрузке файла.\nПерезагрузите страницу и попробуйте снова.');
+            setErrorText(`${err.message}`);
             openPopupHandler();
         }
     };
@@ -71,17 +94,17 @@ export const AddPost = () => {
         setText(value);
     }, []);
 
+    //TODO - разобраться с валидацией комментов
     const uploadImage = async () => {
-        console.log(file + ' file');
         if (file) {
-            const formData = new FormData();
-            console.log(file);
-            formData.append('image', file);
-            const { data } = await axios.post('/upload', formData);
-            setImageUrl(data.url);
-            URL.revokeObjectURL(objUrl);
+                const formData = new FormData();
+                console.log(file);
+                formData.append('image', file);
+                const { data } = await axios.post('/upload', formData);
+                setImageUrl(data.url);
+                URL.revokeObjectURL(objUrl);
 
-            return data;
+                return data;
         }
 
         return null;
@@ -89,11 +112,11 @@ export const AddPost = () => {
 
     const onSubmit = async () => {
         try {
+            setIsSubmitting((prevState) => !prevState);
             const uploadData = await uploadImage();
 
             setLoading(true);
 
-            //TODO - добавить error для неверных тегов, заголовка, текста
             const trimTags = () => {
                 const splittedTags = tags.split(',');
                 const trimmedTags = splittedTags.map((tag) => tag.trim());
@@ -119,11 +142,19 @@ export const AddPost = () => {
 
             const _id = isEditing ? id : data._id;
 
+            setIsSubmitting((prevState) => !prevState);
             navigate(`/posts/${_id}`);
         } catch (err) {
-            console.error(err);
-            setErrorText('Ошибка при создании статьи.\nПерезагрузите страницу и попробуйте снова.');
+            let errorMsg;
+            if (err.response.data instanceof Array) {
+                errorMsg = `Статья неверно оформлена:\n${err.response.data.reduce((fullMsg, d) => { return fullMsg + d.msg + '\n'}, '')}`;
+            } else {
+                errorMsg = err.response.data.message;
+            }
+
+            setErrorText(errorMsg);
             openPopupHandler();
+            setIsSubmitting((prevState) => !prevState);
         }
     };
 
@@ -216,7 +247,7 @@ export const AddPost = () => {
                     options={options}
                 />
                 <div className={styles.buttons}>
-                    <Button onClick={onSubmit} size='large' variant='contained'>
+                    <Button onClick={onSubmit} size='large' variant='contained' disabled={isSubmitting}>
                         {isEditing ? 'Сохранить' : 'Опубликовать'}
                     </Button>
                     <a href='/'>

@@ -5,3 +5,7 @@ export * from './AddComment';
 export * from './SideBlock';
 export * from './UserInfo';
 export * from './Header';
+export * from './ModalWindow/ModalWindow';
+export * from './LoginTextFields/LoginTextFields';
+export * from './ModalPicture/ModalPicture';
+export * from './RegistrationTextFields/RegistrationTextFields';

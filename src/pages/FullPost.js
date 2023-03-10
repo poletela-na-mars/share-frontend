@@ -6,8 +6,8 @@ import { selectIsAuth } from '../redux/slices/auth';
 import axios from '../axios';
 import ReactMarkdown from 'react-markdown';
 
-import { CommentsBlock, Post } from '../components';
-import { ModalWindow } from '../components/ModalWindow/ModalWindow';
+import { CommentsBlock, Post, AddComment } from '../components';
+import { ModalWindow } from '../components';
 
 export const FullPost = () => {
     const [data, setData] = useState();
@@ -89,7 +89,7 @@ export const FullPost = () => {
                 })}
                 isLoading={false}
             >
-                {isAuth && <ModalWindow author={userData.fullName} updateLastComment={updateLastComment} />}
+                {isAuth && <AddComment author={userData.fullName} updateLastComment={updateLastComment} />}
             </CommentsBlock>
         </>
     );

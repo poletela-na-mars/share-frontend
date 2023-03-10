@@ -1,20 +1,22 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, selectIsAuth } from '../../redux/slices/auth';
 
+import { ThemeProvider } from '@mui/material';
+import { ModalWindow } from '../ModalWindow/ModalWindow';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 
 import styles from './Header.module.scss';
 import { theme } from '../../theme';
-import { ThemeProvider } from '@mui/material';
-import { ModalWindow } from '../ModalWindow/ModalWindow';
 
 export const Header = () => {
     const dispatch = useDispatch();
     const isAuth = useSelector(selectIsAuth);
+    const location = useLocation();
+
     const [openSelectionPopup, setOpenSelectionPopup] = useState(false);
 
     const logoutButtonClickHandler = () => {
@@ -50,16 +52,17 @@ export const Header = () => {
                         <div className={styles.buttons}>
                             {isAuth ? (
                                 <>
-                                    <Button onClick={logoutButtonClickHandler} variant='contained'>
+                                    <Button onClick={logoutButtonClickHandler} variant='outlined'>
                                         Выйти
                                     </Button>
-                                    <Link to='/add-post'>
-                                        <Button variant='contained'
-                                                style={{ backgroundColor: theme.palette.primary.light }}
-                                        >
+
+                                    <Button variant='contained'
+                                            disabled={location.pathname === '/add-post'}
+                                    >
+                                        <Link to='/add-post' style={{ color: theme.palette.light.light }}>
                                             Написать статью
-                                        </Button>
-                                    </Link>
+                                        </Link>
+                                    </Button>
                                 </>
                             ) : (
                                 <>

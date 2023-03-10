@@ -5,15 +5,16 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchAuthMe } from '../../redux/slices/auth';
 
-import styles from './AddComment.module.scss';
-
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
+import { ThemeProvider } from '@mui/material';
 
+import styles from './AddComment.module.scss';
+import { theme } from '../../theme';
 
-export const Index = ({ updateLastComment, author }) => {
+export const AddComment = ({ updateLastComment, author }) => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const [comment, setComment] = useState('');
@@ -28,6 +29,7 @@ export const Index = ({ updateLastComment, author }) => {
         setOpenPopup(false);
     };
 
+    //TODO - openPopupHandler не работает
     const onSubmit = async () => {
         try {
             const data = await dispatch(fetchAuthMe());
@@ -42,25 +44,28 @@ export const Index = ({ updateLastComment, author }) => {
             updateLastComment(fields);
         } catch (err) {
             console.error(err);
-            setErrorText('Ошибка при создании комментария.\nПерезагрузите страницу и попробуйте снова.');
+            const errorMsg = `${err.response.data.reduce((fullMsg, d) => { return fullMsg + d.msg + '\n'}, '')}`;
+            setErrorText(errorMsg);
             openPopupHandler();
         }
     };
 
     return (
-        <>
-            <ModalWindow openPopup={openPopup}
-                         closePopupHandler={closePopupHandler}
-                         text={errorText}
-                         error={true}
-            />
+        <ThemeProvider theme={theme}>
             <div className={styles.root}>
+                <ModalWindow openPopup={openPopup}
+                             closePopupHandler={closePopupHandler}
+                             text={errorText}
+                             error={true}
+                />
                 <Avatar
                     classes={{ root: styles.avatar }}
                     src={`/avatars/${author.charAt(0).toLowerCase()}.png`}
                 />
                 <div className={styles.form}>
                     <TextField
+                        helperText={errorText}
+                        error={Boolean(errorText)}
                         label='Комментарий'
                         variant='outlined'
                         value={comment}
@@ -71,9 +76,9 @@ export const Index = ({ updateLastComment, author }) => {
                         fullWidth
                         placeholder='Написать комментарий'
                     />
-                    <Button type='submit' onClick={onSubmit} variant='contained'>Отправить</Button>
+                    <Button onClick={onSubmit} variant='contained'>Отправить</Button>
                 </div>
             </div>
-        </>
+        </ThemeProvider>
     );
 };

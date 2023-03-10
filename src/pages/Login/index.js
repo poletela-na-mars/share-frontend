@@ -4,8 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-import { EmailTextField, PasswordTextField } from '../Registration';
-import { ModalWindow } from '../../components/ModalWindow/ModalWindow';
+import { LoginTextFields } from '../../components';
 import Avatar from '@mui/material/Avatar';
 
 import { fetchAuth, selectIsAuth } from '../../redux/slices/auth';
@@ -21,16 +20,7 @@ export const Login = () => {
     const isAuth = useSelector(selectIsAuth);
     const dispatch = useDispatch();
 
-    const [openPopup, setOpenPopup] = useState(false);
-    const [errorText, setErrorText] = useState('');
-
-    const openPopupHandler = () => {
-        setOpenPopup(true);
-    };
-
-    const closePopupHandler = () => {
-        setOpenPopup(false);
-    };
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { register, handleSubmit, setError, formState: { errors, isValid } } = useForm({
         defaultValues: {
@@ -41,15 +31,20 @@ export const Login = () => {
     });
 
     const onSubmit = async (values) => {
-        const data = await dispatch(fetchAuth(values));
+        try {
+            setIsSubmitting((prevState) => !prevState);
+            const data = await dispatch(fetchAuth(values));
+            setIsSubmitting((prevState) => !prevState);
 
-        if (!data.payload) {
-            setErrorText('Не удалось авторизоваться.\nПроверьте введенные данные и попробуйте снова.');
-            openPopupHandler();
-        }
-
-        if ('token' in data.payload) {
-            window.localStorage.setItem('token', data.payload.token);
+            console.log(data);
+            if (data.meta.requestStatus === 'rejected') {
+                await Promise.reject(data.error.message);
+            } else if ('token' in data?.payload) {
+                window.localStorage.setItem('token', data.payload.token);
+            }
+        } catch (err) {
+            console.log(err);
+            setError('LoginError', { type: 'custom', message: err });
         }
     };
 
@@ -63,11 +58,6 @@ export const Login = () => {
 
     return (
         <Paper classes={{ root: styles.root }}>
-            <ModalWindow openPopup={openPopup}
-                         closePopupHandler={closePopupHandler}
-                         text={errorText}
-                         error={true}
-            />
             <Avatar
                 alt='logo'
                 sx={{ width: 56, height: 56, marginBottom: '20px' }}
@@ -77,14 +67,13 @@ export const Login = () => {
                 Вход в аккаунт
             </Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <EmailTextField errors={errors} register={register} />
-                <PasswordTextField showPassword={showPassword} handleClickShowPassword={handleClickShowPassword}
-                                   errors={errors} register={register} />
+                <LoginTextFields errors={errors} register={register} showPassword={showPassword}
+                                 handleClickShowPassword={handleClickShowPassword} />
                 <Button
                     type="submit"
                     size='large'
                     variant='contained'
-                    disabled={!isValid}
+                    disabled={!isValid || isSubmitting}
                     fullWidth
                 >
                     Войти
