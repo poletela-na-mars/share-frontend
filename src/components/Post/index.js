@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
 import { fetchRemovePost } from '../../redux/slices/posts';
@@ -15,6 +16,7 @@ import { ModalPicture } from '../ModalPicture/ModalPicture';
 import { PostSkeleton } from './Skeleton';
 import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { Menu, MenuItem, styled, ThemeProvider } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 
 import styles from './Post.module.scss';
 import { theme } from '../../theme';
@@ -60,10 +62,16 @@ export const Post = ({
                          isEditable,
                      }) => {
     const dispatch = useDispatch();
+
     const [openSelectionPopup, setOpenSelectionPopup] = useState(false);
     const [openPicture, setOpenPicture] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const isOpenedPostMenu = Boolean(anchorEl);
+
+    const { ref, inView } = useInView({
+        threshold: 0.2,
+        triggerOnce: true,
+    });
 
     if (isLoading) {
         return <PostSkeleton />;
@@ -92,15 +100,15 @@ export const Post = ({
 
     return (
         <ThemeProvider theme={theme}>
-            <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
-                <ModalWindow openPopup={openSelectionPopup}
-                             closePopupHandler={closeSelectionPopupHandler}
-                             actionHandler={removePostHandler}
-                             text='Вы действительно хотите удалить статью?'
-                             error={false}
-                />
-                <ModalPicture openPopup={openPicture} closePopupHandler={closePictureHandler} src={imageUrl}
-                              title={title} />
+            <ModalWindow openPopup={openSelectionPopup}
+                         closePopupHandler={closeSelectionPopupHandler}
+                         actionHandler={removePostHandler}
+                         text='Вы действительно хотите удалить статью?'
+                         error={false}
+            />
+            <ModalPicture openPopup={openPicture} closePopupHandler={closePictureHandler} src={imageUrl}
+                          title={title} />
+            <div ref={ref} className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
                 {isEditable && (
                     <div className={styles.editButtons}>
                         <IconButton
@@ -132,39 +140,75 @@ export const Post = ({
                             alt={title}
                             onClick={() => setOpenPicture(true)}
                         />
-                    ) : (<img
-                        className={styles.image}
-                        src={imageUrl}
-                        alt={title}
-                    />)
+                    ) : inView
+                        ? <img
+                            className={styles.image}
+                            src={imageUrl}
+                            alt={title}
+                        />
+                        : <Skeleton variant='rectangular' width='100%' height={300} />
                 )}
                 <div className={styles.wrapper}>
-                    <UserInfo {...user}
-                              additionalText={wasEdited ?
-                                  `${dateFormatter(createdAt)} (ред. ${dateFormatter(wasEdited)})` :
-                                  dateFormatter(createdAt)} />
+                    {inView
+                        ? <UserInfo {...user}
+                                    additionalText={wasEdited ?
+                                        `${dateFormatter(createdAt)} (ред. ${dateFormatter(wasEdited)})` :
+                                        dateFormatter(createdAt)} />
+                        : <div className={styles.skeletonUser}>
+                            <Skeleton
+                                variant='circular'
+                                width={40}
+                                height={40}
+                                style={{ marginRight: 10 }}
+                            />
+                            <div className={styles.skeletonUserDetails}>
+                                <Skeleton variant='text' width={60} height={20} />
+                                <Skeleton variant='text' width={100} height={15} />
+                            </div>
+                        </div>
+                    }
                     <div className={styles.indention}>
                         <h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>
-                            {isFullPost ? title : <Link to={`/posts/${id}`}>{title}</Link>}
+                            {isFullPost ? title : inView
+                                ? <Link to={`/posts/${id}`}>{title}</Link>
+                                : <Skeleton variant='text' width='80%' height={45} />
+                            }
                         </h2>
                         <ul className={styles.tags}>
-                            {tags.map((name) => (
-                                <li key={name}>
-                                    #{name}
-                                </li>
-                            ))}
+                            {inView
+                                ? tags.map((name) => (
+                                    <li key={name}>
+                                        #{name}
+                                    </li>
+                                ))
+                                : <div className={styles.skeletonTags}>
+                                    <Skeleton variant='text' width={40} height={30} />
+                                    <Skeleton variant='text' width={40} height={30} />
+                                    <Skeleton variant='text' width={40} height={30} />
+                                </div>
+                            }
                         </ul>
                         {children && <div className={styles.content}>{children}</div>}
-                        <ul className={styles.postDetails}>
-                            <li>
-                                <EyeIcon />
-                                <span>{viewsCount}</span>
-                            </li>
-                            <li>
-                                <CommentIcon />
-                                <span>{commentsCount}</span>
-                            </li>
-                        </ul>
+                        {inView
+                            ? (
+                                <ul className={styles.postDetails}>
+                                    <li>
+                                        <EyeIcon />
+                                        <span>{viewsCount}</span>
+                                    </li>
+                                    <li>
+                                        <CommentIcon />
+                                        <span>{commentsCount}</span>
+                                    </li>
+                                </ul>
+                            )
+                            : (
+                                <div className={styles.skeletonDetails}>
+                                    <Skeleton variant='text' width={38} height={35} />
+                                    <Skeleton variant='text' width={38} height={35} />
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </div>

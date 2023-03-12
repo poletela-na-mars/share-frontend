@@ -59,7 +59,7 @@ export const Login = () => {
     return (
         <Paper classes={{ root: styles.root }}>
             <Avatar
-                alt='logo'
+                alt='Logo'
                 sx={{ width: 56, height: 56, marginBottom: '20px' }}
                 src={'/logo.png'}
             />

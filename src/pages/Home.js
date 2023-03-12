@@ -54,7 +54,6 @@ export const Home = () => {
         setTabValue(tabValue);
     };
 
-    //TODO - lazy loading
     return (
         <>
             <Tabs style={{ marginBottom: 15 }} value={tabValue} onChange={handleTabValueChange} aria-label='tabs'>

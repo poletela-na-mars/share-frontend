@@ -150,6 +150,17 @@
   }
 }
 
+.skeletonDetails {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding: 0;
+
+  span {
+    margin-right: 15px;
+  }
+}
+
 .editButtons {
   position: absolute;
   right: 15px;
