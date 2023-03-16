@@ -1,4 +1,5 @@
 # Share
+*frontend*
 
 Minimalistic blog built on **MERN** (backend is [here](https://github.com/poletela-na-mars/share))
 
