@@ -1,0 +1,17 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.root h1, .root p {
+  text-align: center;
+  line-height: 2;
+}
+.root img {
+  max-width: 330px;
+  max-height: 330px;
+  object-fit: contain;
+}
+
+/*# sourceMappingURL=NotFound.module.css.map */

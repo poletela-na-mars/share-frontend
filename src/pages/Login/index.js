@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
+import { fetchAuth, selectIsAuth } from '../../redux/slices/auth';
+
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 import { LoginTextFields } from '../../components';
+
 import Avatar from '@mui/material/Avatar';
-
-import { fetchAuth, selectIsAuth } from '../../redux/slices/auth';
-
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
@@ -36,7 +36,6 @@ export const Login = () => {
             const data = await dispatch(fetchAuth(values));
             setIsSubmitting((prevState) => !prevState);
 
-            console.log(data);
             if (data.meta.requestStatus === 'rejected') {
                 await Promise.reject(data.error.message);
             } else if ('token' in data?.payload) {

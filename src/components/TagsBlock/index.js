@@ -1,4 +1,4 @@
-import React from 'react';
+import { SideBlock } from '../SideBlock';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -10,7 +10,6 @@ import Skeleton from '@mui/material/Skeleton';
 
 import styles from './TagsBlock.module.scss';
 
-import { SideBlock } from '../SideBlock';
 import { theme } from '../../theme';
 import { nanoid } from '@reduxjs/toolkit';
 
@@ -34,7 +33,8 @@ export const TagsBlock = ({ items, isLoading = true, changeSelectedTag, tag }) =
                     }
                 }}
             >
-                {(isLoading ? [...Array(5)] : items).filter((x, i, a) => a.indexOf(x) === i).map((name) => (
+                {(isLoading ? [...Array(5)] : items).filter((x, i, a) => a.indexOf(x) === i)
+                    .map((name) => (
                     <span
                         style={{ textDecoration: 'none', color: 'black' }}
                         key={nanoid()}

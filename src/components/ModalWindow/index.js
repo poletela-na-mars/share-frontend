@@ -35,7 +35,6 @@ export const ModalWindow = ({ openPopup, closePopupHandler, actionHandler, text,
                          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
                         {error
                             ? <Button className='selection-popup__yes-button'
-                                // sx={{ marginLeft: '20px', marginRight: '20px' }}
                                       onClick={closePopupHandler}>
                                 Закрыть
                             </Button>

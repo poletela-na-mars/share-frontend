@@ -5,12 +5,13 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchAuthMe } from '../../redux/slices/auth';
 
+import { ModalWindow } from '../ModalWindow';
+
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import { ModalWindow } from '../ModalWindow/ModalWindow';
-import { ThemeProvider } from '@mui/material';
 
+import { ThemeProvider } from '@mui/material';
 import styles from './AddComment.module.scss';
 import { theme } from '../../theme';
 
@@ -21,6 +22,8 @@ export const AddComment = ({ updateLastComment, author }) => {
     const [openPopup, setOpenPopup] = useState(false);
     const [errorText, setErrorText] = useState('');
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const openPopupHandler = () => {
         setOpenPopup(true);
     };
@@ -29,9 +32,9 @@ export const AddComment = ({ updateLastComment, author }) => {
         setOpenPopup(false);
     };
 
-    //TODO - openPopupHandler не работает
     const onSubmit = async () => {
         try {
+            setIsSubmitting((prevState) => !prevState);
             const data = await dispatch(fetchAuthMe());
 
             const fields = {
@@ -44,9 +47,12 @@ export const AddComment = ({ updateLastComment, author }) => {
             updateLastComment(fields);
         } catch (err) {
             console.error(err);
-            const errorMsg = `${err.response.data.reduce((fullMsg, d) => { return fullMsg + d.msg + '\n'}, '')}`;
+            const errorMsg = `${err.response.data.reduce((fullMsg, d) => {
+                return fullMsg + d.msg + '\n'
+            }, '')}`;
             setErrorText(errorMsg);
             openPopupHandler();
+            setIsSubmitting((prevState) => !prevState);
         }
     };
 
@@ -76,7 +82,7 @@ export const AddComment = ({ updateLastComment, author }) => {
                         fullWidth
                         placeholder='Написать комментарий'
                     />
-                    <Button onClick={onSubmit} variant='contained'>Отправить</Button>
+                    <Button onClick={onSubmit} variant='contained' disabled={isSubmitting}>Отправить</Button>
                 </div>
             </div>
         </ThemeProvider>

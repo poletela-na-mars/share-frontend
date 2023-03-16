@@ -5,17 +5,18 @@ import { selectIsAuth } from '../../redux/slices/auth';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axios';
 
+import { ModalWindow } from '../../components';
+
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import SimpleMDE from 'react-simplemde-editor';
 import Container from '@mui/material/Container';
-import { ThemeProvider } from '@mui/material';
-import { ModalWindow } from '../../components';
 import 'easymde/dist/easymde.min.css';
 
 import styles from './AddPost.module.scss';
 import { theme } from '../../theme';
+import { ThemeProvider } from '@mui/material';
 
 function InvalidFileError(message) {
     this.name = 'InvalidFileError';
@@ -26,7 +27,6 @@ export const AddPost = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const isAuth = useSelector(selectIsAuth);
-    const [isLoading, setLoading] = useState(false);
     const [text, setText] = useState('');
     const [title, setTitle] = useState('');
     const [tags, setTags] = useState('');
@@ -94,17 +94,16 @@ export const AddPost = () => {
         setText(value);
     }, []);
 
-    //TODO - разобраться с валидацией комментов
     const uploadImage = async () => {
         if (file) {
-                const formData = new FormData();
-                console.log(file);
-                formData.append('image', file);
-                const { data } = await axios.post('/upload', formData);
-                setImageUrl(data.url);
-                URL.revokeObjectURL(objUrl);
+            const formData = new FormData();
+            console.log(file);
+            formData.append('image', file);
+            const { data } = await axios.post('/upload', formData);
+            setImageUrl(data.url);
+            URL.revokeObjectURL(objUrl);
 
-                return data;
+            return data;
         }
 
         return null;
@@ -114,8 +113,6 @@ export const AddPost = () => {
         try {
             setIsSubmitting((prevState) => !prevState);
             const uploadData = await uploadImage();
-
-            setLoading(true);
 
             const trimTags = () => {
                 const splittedTags = tags.split(',');
@@ -147,7 +144,9 @@ export const AddPost = () => {
         } catch (err) {
             let errorMsg;
             if (err.response.data instanceof Array) {
-                errorMsg = `Статья неверно оформлена:\n${err.response.data.reduce((fullMsg, d) => { return fullMsg + d.msg + '\n'}, '')}`;
+                errorMsg = `Статья неверно оформлена:\n${err.response.data.reduce((fullMsg, d) => {
+                    return fullMsg + d.msg + '\n'
+                }, '')}`;
             } else {
                 errorMsg = err.response.data.message;
             }

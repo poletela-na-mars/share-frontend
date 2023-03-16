@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-
 import { fetchPosts, fetchTags } from '../redux/slices/posts';
+
+import { Post, TagsBlock } from '../components';
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 
-import { Post, TagsBlock } from '../components';
-
 export const Home = () => {
     const [tabValue, setTabValue] = useState(0);
     const [tag, setTag] = useState('');
+
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.auth.data);
     const { posts, tags } = useSelector((state) => state.posts);

@@ -8,15 +8,6 @@
   margin-bottom: 15px;
   position: relative;
 
-  //&:hover {
-  //  //border: 1px solid $light-green-color;
-  //  //box-shadow: 0 0 0 1px $light-green-color;
-  //
-  //  .editButtons {
-  //    opacity: 1;
-  //  }
-  //}
-
   &Full {
     &:hover {
       background-color: #fff;
@@ -153,7 +144,7 @@
 .skeletonDetails {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   padding: 0;
 
   span {

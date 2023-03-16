@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { fetchRegister, selectIsAuth } from '../../redux/slices/auth';
 import { Navigate } from 'react-router-dom';
+
+import { RegistrationTextFields } from '../../components';
+
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-import { RegistrationTextFields } from '../../components';
 
 import styles from './Registration.module.scss';
 
@@ -40,7 +42,7 @@ export const Registration = () => {
                 window.localStorage.setItem('token', data.payload.token);
             }
         } catch (err) {
-            console.log(err);
+            console.error(err);
             setError('RegisterError', { type: 'custom', message: JSON.parse(err) });
         }
     };

@@ -1,20 +1,22 @@
-import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { fetchRemovePost } from '../../redux/slices/posts';
 import { dateFormatter } from '../../utils/dateFormatter';
+
+import { UserInfo } from '../UserInfo';
+import { ModalPicture } from '../ModalPicture';
+import { PostSkeleton } from './PostSkeleton';
+import { ModalWindow } from '../ModalWindow';
 
 import clsx from 'clsx';
 import IconButton from '@mui/material/IconButton';
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import { UserInfo } from '../UserInfo';
-import { ModalPicture } from '../ModalPicture/ModalPicture';
-import { PostSkeleton } from './Skeleton';
-import { ModalWindow } from '../ModalWindow/ModalWindow';
 import { Menu, MenuItem, styled, ThemeProvider } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 
@@ -39,7 +41,8 @@ const StyledPostMenu = styled((props) => (
         marginTop: theme.spacing(1),
         minWidth: 180,
         boxShadow:
-            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px' +
+            ' -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
         '& .MuiMenu-list': {
             padding: '4px 0',
         },

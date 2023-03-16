@@ -1,14 +1,14 @@
-import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, selectIsAuth } from '../../redux/slices/auth';
 
-import { ThemeProvider } from '@mui/material';
-import { ModalWindow } from '../ModalWindow/ModalWindow';
+import { ModalWindow } from '../ModalWindow';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 
+import { ThemeProvider } from '@mui/material';
 import styles from './Header.module.scss';
 import { theme } from '../../theme';
 

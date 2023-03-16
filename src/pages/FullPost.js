@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react';
+
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from '../redux/slices/auth';
-
 import axios from '../axios';
 import ReactMarkdown from 'react-markdown';
 
-import { CommentsBlock, Post, AddComment } from '../components';
-import { ModalWindow } from '../components';
+import { CommentsBlock, Post, AddComment, ModalWindow } from '../components';
 
 export const FullPost = () => {
     const [data, setData] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [lastComment, setLastComment] = useState({});
+    const [openPopup, setOpenPopup] = useState(false);
+    const [errorText, setErrorText] = useState('');
+
     const { id } = useParams();
     const isAuth = useSelector(selectIsAuth);
     const userData = useSelector((state) => state.auth.data);
-
-    const [openPopup, setOpenPopup] = useState(false);
-    const [errorText, setErrorText] = useState('');
 
     const openPopupHandler = () => {
         setOpenPopup(true);

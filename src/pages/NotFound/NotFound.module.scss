@@ -1,0 +1,17 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1, p {
+    text-align: center;
+    line-height: 2;
+  }
+
+  img {
+    max-width: 330px;
+    max-height: 330px;
+    object-fit: contain;
+  }
+}
