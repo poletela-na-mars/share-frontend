@@ -97,7 +97,6 @@ export const AddPost = () => {
     const uploadImage = async () => {
         if (file) {
             const formData = new FormData();
-            console.log(file);
             formData.append('image', file);
             const { data } = await axios.post('/upload', formData);
             setImageUrl(data.url);
@@ -129,8 +128,8 @@ export const AddPost = () => {
                 text,
             };
 
-            if (isEditing && oldImageUrl !== fields.imageUrl) {
-                fields.oldImageUrl = oldImageUrl;
+            if (isEditing && oldImageUrl && oldImageUrl !== fields.imageUrl) {
+                fields.imageUrl = oldImageUrl;
             }
 
             const { data } = isEditing
