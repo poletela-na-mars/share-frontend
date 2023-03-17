@@ -215,7 +215,7 @@ export const AddPost = () => {
                 </Container>
                 {imagePreview ? <img className={styles.image} src={imagePreview} alt='Uploaded' />
                     : (imageUrl ?
-                        <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt='Uploaded' /> :
+                        <img className={styles.image} src={`${process.env.REACT_APP_API_URL}${imageUrl}`} alt='Uploaded' /> :
                         null)
                 }
                 <br />
