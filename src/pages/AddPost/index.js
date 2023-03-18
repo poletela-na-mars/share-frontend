@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { selectIsAuth } from '../../redux/slices/auth';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axios';
+import '../../utils/stringMethods';
 
 import { ModalWindow } from '../../components';
 
@@ -116,7 +117,20 @@ export const AddPost = () => {
             const trimTags = () => {
                 const splittedTags = tags.split(',');
                 const trimmedTags = splittedTags.map((tag) => tag.trim());
-                return trimmedTags.filter((tag) => tag !== '');
+                const filteredTags = trimmedTags.filter((tag) => tag !== '');
+                return filteredTags.map((tag) => {
+                        const idxOfHash = tag.indexOf('#');
+                        if (idxOfHash >= 0) {
+                            tag.replaceAt(idxOfHash, '');
+                        }
+                        const idxOfUnderscore = tag.indexOf('_');
+                        if (idxOfUnderscore >= 0) {
+                            tag.replaceAt(idxOfUnderscore, ' ');
+                        }
+
+                        return tag;
+                    }
+                );
             };
 
             const cleanTags = trimTags();
@@ -215,7 +229,8 @@ export const AddPost = () => {
                 </Container>
                 {imagePreview ? <img className={styles.image} src={imagePreview} alt='Uploaded' />
                     : (imageUrl ?
-                        <img className={styles.image} src={`${process.env.REACT_APP_API_URL}${imageUrl}`} alt='Uploaded' /> :
+                        <img className={styles.image} src={`${process.env.REACT_APP_API_URL}${imageUrl}`}
+                             alt='Uploaded' /> :
                         null)
                 }
                 <br />

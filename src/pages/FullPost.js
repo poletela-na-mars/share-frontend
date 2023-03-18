@@ -28,6 +28,7 @@ export const FullPost = () => {
     };
 
     const updateLastComment = (value) => {
+        setIsLoading(true);
         setLastComment(value);
     };
 
