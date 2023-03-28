@@ -30,15 +30,20 @@ export const TagsBlock = ({ items, isLoading = true, changeSelectedTag, tag }) =
                     '&::-webkit-scrollbar-thumb': {
                         backgroundColor: 'rgba(0,0,0,.1)',
                         borderRadius: theme.shape.lightRoundedBorderRadius,
+                    },
+                    '&': {
+                        overflowY: 'scroll',
+                        scrollbarColor: 'rgba(0,0,0,.1)',
+                        scrollbarWidth: 'thin',
                     }
                 }}
             >
                 {(isLoading ? [...Array(5)] : items).filter((x, i, a) => a.indexOf(x) === i)
                     .map((name) => (
-                    <span
-                        style={{ textDecoration: 'none', color: 'black' }}
-                        key={nanoid()}
-                    >
+                        <span
+                            style={{ textDecoration: 'none', color: 'black' }}
+                            key={nanoid()}
+                        >
                         <ListItem disablePadding>
                             <ListItemButton
                                 onClick={() => {
@@ -56,7 +61,7 @@ export const TagsBlock = ({ items, isLoading = true, changeSelectedTag, tag }) =
                             </ListItemButton>
                         </ListItem>
                     </span>
-                ))}
+                    ))}
             </List>
         </SideBlock>
     );
