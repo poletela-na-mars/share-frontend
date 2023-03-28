@@ -33,8 +33,9 @@ export const TagsBlock = ({ items, isLoading = true, changeSelectedTag, tag }) =
                     },
                     '&': {
                         overflowY: 'scroll',
-                        scrollbarColor: 'rgba(0,0,0,.1)',
+                        scrollbarColor: 'rgba(0,0,0,.1) rgba(255, 255, 255)',
                         scrollbarWidth: 'thin',
+                        scrollbarRadius: theme.shape.lightRoundedBorderRadius,
                     }
                 }}
             >
