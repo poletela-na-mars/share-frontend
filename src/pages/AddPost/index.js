@@ -70,7 +70,7 @@ export const AddPost = () => {
             const maxSize = 5 * 1024 * 1024; // 5MB
             const minSize = 5 * 1024;
             if (targetFile.size >= maxSize || targetFile.size <= minSize) {
-                throw new InvalidFileError('Изображение слишком большое или слишком маленькое.');
+                throw new InvalidFileError('Изображение слишком большое или слишком маленькое (должно быть не меньше 5 Кб и не больше 5 Мб).');
             }
 
             setFile(targetFile);

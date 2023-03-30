@@ -96,10 +96,9 @@ export const Post = ({
         setOpenPicture(false);
     };
 
-    const removePostHandler = (event) => {
-        event.preventDefault();
+    const removePostHandler = () => {
         dispatch(fetchRemovePost({ id, imageUrl }));
-        window.location.reload();
+        // window.location.reload();
     };
 
     return (
