@@ -71,12 +71,20 @@ export const Post = ({
     const [openPicture, setOpenPicture] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [image, setImage] = useState('');
-    
+
+    const arrayBufferToBase64 = (buffer) => {
+        let binary = '';
+        const bytes = [].slice.call(new Uint8Array(buffer));
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+        return window.btoa(binary);
+    };
+
     useEffect(() => {
         if (imageUrl) {
             axios.get(imageUrl).then((res) => {
                 console.log(res.data);
-                setImage(`data:${res.data.file.contentType};base64,${res.data.file.data.data}`);
+                const base64Content = arrayBufferToBase64(res.data.file.data.data);
+                setImage(`data:${res.data.file.contentType};base64,${base64Content}`);
             }).catch((err) => {
                 console.error(err);
                 //TODO - setErrorText
