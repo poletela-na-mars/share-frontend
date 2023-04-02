@@ -73,13 +73,16 @@ export const Post = ({
     const [image, setImage] = useState('');
     
     useEffect(() => {
-        axios.get(`uploads/${imageUrl}`).then((res) => {
-            setImage(`data:${res.data.file.contentType};base64,${res.data.file.data.data}`);
-        }).catch((err) => {
-            console.error(err);
-            //TODO - setErrorText
-            // openPopupHandler();
-        });
+        if (imageUrl) {
+            axios.get(`uploads/${imageUrl}`).then((res) => {
+                console.log(res.data);
+                setImage(`data:${res.data.file.contentType};base64,${res.data.file.data.data}`);
+            }).catch((err) => {
+                console.error(err);
+                //TODO - setErrorText
+                // openPopupHandler();
+            });
+        }
     }, [imageUrl]);
     
     const isOpenedPostMenu = Boolean(anchorEl);
