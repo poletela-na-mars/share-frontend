@@ -74,7 +74,7 @@ export const Post = ({
     
     useEffect(() => {
         axios.get(`uploads/${imageUrl}`).then((res) => {
-            setImage(res.data);
+            setImage(`data:${res.data.file.contentType};base64,${res.data.file.data.data}`);
         }).catch((err) => {
             console.error(err);
             //TODO - setErrorText
@@ -122,7 +122,7 @@ export const Post = ({
                          text='Вы действительно хотите удалить статью?'
                          error={false}
             />
-            <ModalPicture openPopup={openPicture} closePopupHandler={closePictureHandler} src={`data:${image.file.contentType};base64,${image.file.data.data}`}
+            <ModalPicture openPopup={openPicture} closePopupHandler={closePictureHandler} src={image}
                           title={title} />
             <div ref={ref} className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
                 {isEditable && (
@@ -152,14 +152,14 @@ export const Post = ({
                 {imageUrl && (isFullPost ? (
                         <img
                             className={clsx(styles.image, styles.minImageFullPost)}
-                            src={`data:${image.file.contentType};base64,${image.file.data.data}`}
+                            src={image}
                             alt={title}
                             onClick={() => setOpenPicture(true)}
                         />
                     ) : inView
                         ? <img
                             className={styles.image}
-                            src={`data:${image.file.contentType};base64,${image.file.data.data}`}
+                            src={image}
                             alt={title}
                         />
                         : <Skeleton variant='rectangular' width='100%' height={300} />
