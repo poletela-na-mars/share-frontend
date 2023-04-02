@@ -74,7 +74,7 @@ export const Post = ({
     
     useEffect(() => {
         if (imageUrl) {
-            axios.get(`uploads/${imageUrl}`).then((res) => {
+            axios.get(`/uploads/${imageUrl}`).then((res) => {
                 console.log(res.data);
                 setImage(`data:${res.data.file.contentType};base64,${res.data.file.data.data}`);
             }).catch((err) => {
