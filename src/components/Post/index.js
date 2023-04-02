@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
@@ -69,6 +70,18 @@ export const Post = ({
     const [openSelectionPopup, setOpenSelectionPopup] = useState(false);
     const [openPicture, setOpenPicture] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [image, setImage] = useState('');
+    
+    useEffect(() => {
+        axios.get(`uploads/${imageUrl}`).then((res) => {
+            setImage(res.data);
+        }).catch((err) => {
+            console.error(err);
+            //TODO - setErrorText
+            // openPopupHandler();
+        });
+    }, [imageUrl]);
+    
     const isOpenedPostMenu = Boolean(anchorEl);
 
     const { ref, inView } = useInView({
@@ -98,7 +111,7 @@ export const Post = ({
 
     const removePostHandler = () => {
         dispatch(fetchRemovePost({ id, imageUrl }));
-        // window.location.reload();
+        window.location.reload();
     };
 
     return (
@@ -109,7 +122,7 @@ export const Post = ({
                          text='Вы действительно хотите удалить статью?'
                          error={false}
             />
-            <ModalPicture openPopup={openPicture} closePopupHandler={closePictureHandler} src={imageUrl}
+            <ModalPicture openPopup={openPicture} closePopupHandler={closePictureHandler} src={`data:${image.file.contentType};base64,${image.file.data.data}`}
                           title={title} />
             <div ref={ref} className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
                 {isEditable && (
@@ -139,14 +152,14 @@ export const Post = ({
                 {imageUrl && (isFullPost ? (
                         <img
                             className={clsx(styles.image, styles.minImageFullPost)}
-                            src={imageUrl}
+                            src={`data:${image.file.contentType};base64,${image.file.data.data}`}
                             alt={title}
                             onClick={() => setOpenPicture(true)}
                         />
                     ) : inView
                         ? <img
                             className={styles.image}
-                            src={imageUrl}
+                            src={`data:${image.file.contentType};base64,${image.file.data.data}`}
                             alt={title}
                         />
                         : <Skeleton variant='rectangular' width='100%' height={300} />
