@@ -152,7 +152,7 @@ export const AddPost = () => {
             console.log(fields.imageUrl);
 
             if (isEditing && oldImageUrl && oldImageUrl !== fields.imageUrl) {
-                fields.imageUrl = oldImageUrl;
+                fields.oldImageUrl = oldImageUrl;
             }
 
             const { data } = isEditing
