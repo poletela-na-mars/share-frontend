@@ -144,11 +144,12 @@ export const AddPost = () => {
 
             const fields = {
                 title,
-                imageUrl: uploadData?.fileName === undefined ? '' : uploadData.fileName,
+                imageUrl: uploadData?.fileName === undefined ? '' : `/uploads/${uploadData.fileName}`,
                 tags: cleanTags,
                 text,
             };
 
+            console.log('oldImage  ', oldImageUrl);
             console.log(fields.imageUrl);
 
             if (isEditing && oldImageUrl && oldImageUrl !== fields.imageUrl) {
