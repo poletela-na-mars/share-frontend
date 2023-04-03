@@ -5,6 +5,7 @@ import { selectIsAuth } from '../../redux/slices/auth';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from '../../axios';
 import '../../utils/stringMethods';
+import { arrayBufferToBase64 } from '../../utils/arrayBufferToBase64';
 
 import { ModalWindow } from '../../components';
 
@@ -34,6 +35,7 @@ export const AddPost = () => {
     const [oldImageUrl, setOldImageUrl] = useState('');
     const [imageUrl, setImageUrl] = useState('');
     const [imagePreview, setImagePreview] = useState('');
+    const [image, setImage] = useState('');
     const [file, setFile] = useState('');
     const [objUrl, setObjUrl] = useState('');
     const inputFileRef = useRef(null);
@@ -180,6 +182,7 @@ export const AddPost = () => {
                 setTitle(data.title);
                 setText(data.text);
                 const url = data.imageUrl;
+                console.log(url);
                 setOldImageUrl(url);
                 setImageUrl(url);
                 const dataTags = data.tags;
@@ -191,7 +194,18 @@ export const AddPost = () => {
                 openPopupHandler();
             });
         }
-    }, [id]);
+
+        if (oldImageUrl) {
+            axios.get(oldImageUrl).then((res) => {
+                const base64Content = arrayBufferToBase64(res.data.file.data.data);
+                setImage(`data:${res.data.file.contentType};base64,${base64Content}`);
+            }).catch((err) => {
+                console.error(err);
+                //TODO - setErrorText
+                // openPopupHandler();
+            });
+        }
+    }, [id, oldImageUrl]);
 
     const options = useMemo(
         () => ({
@@ -232,8 +246,8 @@ export const AddPost = () => {
                     </Button>
                 </Container>
                 {imagePreview ? <img className={styles.image} src={imagePreview} alt='Uploaded' />
-                    : (imageUrl ?
-                        <img className={styles.image} src={`${process.env.REACT_APP_API_URL}${imageUrl}`}
+                    : (image ?
+                        <img className={styles.image} src={image}
                              alt='Uploaded' /> :
                         null)
                 }

@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 
 import { fetchRemovePost } from '../../redux/slices/posts';
 import { dateFormatter } from '../../utils/dateFormatter';
+import { arrayBufferToBase64 } from '../../utils/arrayBufferToBase64';
 
 import { UserInfo } from '../UserInfo';
 import { ModalPicture } from '../ModalPicture';
@@ -71,13 +72,6 @@ export const Post = ({
     const [openPicture, setOpenPicture] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [image, setImage] = useState('');
-
-    const arrayBufferToBase64 = (buffer) => {
-        let binary = '';
-        const bytes = [].slice.call(new Uint8Array(buffer));
-        bytes.forEach((b) => binary += String.fromCharCode(b));
-        return window.btoa(binary);
-    };
 
     useEffect(() => {
         if (imageUrl) {
