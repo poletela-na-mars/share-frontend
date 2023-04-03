@@ -98,9 +98,12 @@ export const AddPost = () => {
     const uploadImage = async () => {
         if (file) {
             const formData = new FormData();
+            console.log(file);
             formData.append('image', file);
+            console.log(formData);
             const { data } = await axios.post('/uploads', formData);
-            setImageUrl(data.url);
+            console.log(data);
+            setImageUrl(`/uploads/${data.fileName}`);
             URL.revokeObjectURL(objUrl);
 
             return data;
@@ -113,6 +116,7 @@ export const AddPost = () => {
         try {
             setIsSubmitting((prevState) => !prevState);
             const uploadData = await uploadImage();
+            console.log(uploadData);
 
             const trimTags = () => {
                 const splittedTags = tags.split(',');
@@ -137,7 +141,7 @@ export const AddPost = () => {
 
             const fields = {
                 title,
-                imageUrl: uploadData?.url === undefined ? '' : uploadData.url,
+                imageUrl: uploadData?.fileName === undefined ? '' : uploadData.fileName,
                 tags: cleanTags,
                 text,
             };

@@ -82,7 +82,6 @@ export const Post = ({
     useEffect(() => {
         if (imageUrl) {
             axios.get(imageUrl).then((res) => {
-                console.log(res.data);
                 const base64Content = arrayBufferToBase64(res.data.file.data.data);
                 setImage(`data:${res.data.file.contentType};base64,${base64Content}`);
             }).catch((err) => {
