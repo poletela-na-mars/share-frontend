@@ -89,6 +89,7 @@ export const AddPost = () => {
     const onClickRemoveImage = () => {
         setImagePreview('');
         setImageUrl('');
+        setImage('');
         setFile('');
         URL.revokeObjectURL(objUrl);
     };
@@ -147,6 +148,8 @@ export const AddPost = () => {
                 tags: cleanTags,
                 text,
             };
+
+            console.log(fields.imageUrl);
 
             if (isEditing && oldImageUrl && oldImageUrl !== fields.imageUrl) {
                 fields.imageUrl = oldImageUrl;

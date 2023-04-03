@@ -20,7 +20,7 @@ export const ModalPicture = ({ openPopup, closePopupHandler, src, title }) => {
         borderRadius: theme.shape.borderRadius,
         p: 4,
         outline: 'none',
-        margin: '0 1% 0 1%',
+        margin: '2%',
     };
 
     return (
