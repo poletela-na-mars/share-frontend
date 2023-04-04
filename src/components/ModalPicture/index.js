@@ -15,12 +15,11 @@ export const ModalPicture = ({ openPopup, closePopupHandler, src, title }) => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 'lg',
+        width: 'md',
         bgcolor: 'background.paper',
         borderRadius: theme.shape.borderRadius,
         p: 4,
         outline: 'none',
-        margin: '2%',
     };
 
     return (
