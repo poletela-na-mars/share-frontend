@@ -144,7 +144,7 @@ export const AddPost = () => {
 
             const fields = {
                 title,
-                imageUrl: uploadData?.fileName === undefined ? '' : `/uploads/${uploadData.fileName}`,
+                imageUrl: uploadData === null ? imageUrl : (uploadData?.fileName === undefined ? '' : `/uploads/${uploadData.fileName}`),
                 tags: cleanTags,
                 text,
             };
