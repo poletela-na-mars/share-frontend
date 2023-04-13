@@ -113,8 +113,8 @@ export const Post = ({
     setOpenPicture(false);
   };
 
-  const removePostHandler = () => {
-    dispatch(fetchRemovePost({ id, imageUrl }));
+  const removePostHandler = async () => {
+    await dispatch(await fetchRemovePost({ id, imageUrl }));
     window.location.reload();
   };
 
