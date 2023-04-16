@@ -114,7 +114,7 @@ export const Post = ({
   };
 
   const removePostHandler = async () => {
-    await dispatch(await fetchRemovePost({ id, imageUrl }));
+    await dispatch(fetchRemovePost({ id, imageUrl }));
     window.location.reload();
   };
 
