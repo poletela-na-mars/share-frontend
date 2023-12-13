@@ -51,7 +51,7 @@ export const Login = () => {
         return <Navigate to='/' />;
     }
 
-    const handleClickShowPassword = () => {
+    const handleShowPasswordClick = () => {
         setShowPassword(!showPassword);
     };
 
@@ -67,7 +67,7 @@ export const Login = () => {
             </Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <LoginTextFields errors={errors} register={register} showPassword={showPassword}
-                                 handleClickShowPassword={handleClickShowPassword} />
+                                 handleClickShowPassword={handleShowPasswordClick} />
                 <Button
                     type="submit"
                     size='large'

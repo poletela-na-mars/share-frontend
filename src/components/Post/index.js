@@ -136,7 +136,8 @@ export const Post = ({
                     aria-controls={isOpenedPostMenu ? 'basic-menu' : undefined}
                     aria-haspopup='true'
                     aria-expanded={isOpenedPostMenu ? 'true' : undefined}
-                    onClick={(event) => setAnchorEl(event.currentTarget)}>
+                    onClick={(event) => setAnchorEl(event.currentTarget)}
+                >
                   <MoreVertOutlinedIcon />
                 </IconButton>
                 <StyledPostMenu

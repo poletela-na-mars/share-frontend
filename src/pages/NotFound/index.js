@@ -4,7 +4,7 @@ export const NotFound = () => {
     return (
         <div className={styles.root}>
             <img src='/not-found.png' alt='Not found page' />
-            <h1 className=''>
+            <h1>
                 404<br />
                 Страница не найдена
             </h1>
